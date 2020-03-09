@@ -1,5 +1,5 @@
 {
-  "name": "com.grashaar.visual-novel-data",
+  "name": "com.hegaglobal.visual-novel-data",
   "displayName": "Visual Novel Data",
   "version": "0.0.1",
   "unity": "2019.1",
@@ -14,5 +14,5 @@
     "com.bytefish.tinycsvparser": "https://grashaar@github.com/grashaar/TinyCsvParser.git#0.0.2"
   },
   "category": "Unity",
-  "author": "Grashaar <grashaar@outlook.com> (https://github.com/grashaar)"
+  "author": "Hega Global <hegaglobal> (https://github.com/hegaglobal)"
 }
