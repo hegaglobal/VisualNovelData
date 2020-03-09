@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VisualNovelData.Data
 {
-    using Collections;
-
     public interface ILanguageList : IReadOnlyList<string>
     { }
 

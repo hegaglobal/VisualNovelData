@@ -70,7 +70,7 @@ namespace VisualNovelData.Data
             => this.id;
 
         [Serializable]
-        private class ParameterList : Collections.List<string>, IParameterList
+        private sealed class ParameterList : List<string>, IParameterList
         { }
     }
 }

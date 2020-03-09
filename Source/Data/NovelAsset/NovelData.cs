@@ -63,7 +63,7 @@ namespace VisualNovelData.Data
         }
 
         [Serializable]
-        private sealed class ConversationDictionary : Collections.Dictionary<string, ConversationRow>, IConversationDictionary
+        private sealed class ConversationDictionary : SerializableDictionary<string, ConversationRow>, IConversationDictionary
         { }
     }
 }

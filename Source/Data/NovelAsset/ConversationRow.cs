@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace VisualNovelData.Data
 {
-    using Collections;
-
     [Serializable]
     public sealed class ConversationRow : DataRow
     {
@@ -88,7 +87,7 @@ namespace VisualNovelData.Data
         }
 
         [Serializable]
-        private sealed class DialogueDictionary : Dictionary<string, DialogueRow>, IDialogueDictionary
+        private sealed class DialogueDictionary : SerializableDictionary<string, DialogueRow>, IDialogueDictionary
         { }
     }
 }

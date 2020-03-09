@@ -88,7 +88,7 @@ namespace VisualNovelData.Data
             => this.contents.Clear();
 
         [Serializable]
-        private sealed class L10nTextDictionary : Collections.Dictionary<string, L10nTextRow>, IL10nTextDictionary
+        private sealed class L10nTextDictionary : SerializableDictionary<string, L10nTextRow>, IL10nTextDictionary
         { }
     }
 }

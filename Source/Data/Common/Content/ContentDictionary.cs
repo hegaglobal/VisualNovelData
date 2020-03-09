@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace VisualNovelData.Data
 {
-    using Collections;
-
     public interface IContentDictionary : IReadOnlyDictionary<int, ContentRow>
     { }
 
     [Serializable]
-    public sealed class ContentDictionary : Dictionary<int, ContentRow>, IContentDictionary
+    public sealed class ContentDictionary : SerializableDictionary<int, ContentRow>, IContentDictionary
     { }
 }

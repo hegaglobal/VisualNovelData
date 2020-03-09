@@ -67,7 +67,7 @@ namespace VisualNovelData.Data
         }
 
         [Serializable]
-        private sealed class LocalizationDictionary : Collections.Dictionary<string, string>, ILocalizationDictionary
+        private sealed class LocalizationDictionary : SerializableDictionary<string, string>, ILocalizationDictionary
         { }
     }
 }

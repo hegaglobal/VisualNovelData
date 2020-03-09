@@ -3,8 +3,6 @@ using UnityEngine;
 
 namespace VisualNovelData.Data
 {
-    using Collections;
-
     [Serializable]
     public sealed class QuestData : IQuestData
     {
@@ -34,7 +32,7 @@ namespace VisualNovelData.Data
         }
 
         [Serializable]
-        private sealed class QuestDictionary : Dictionary<string, QuestRow>, IQuestDictionary
+        private sealed class QuestDictionary : SerializableDictionary<string, QuestRow>, IQuestDictionary
         { }
     }
 }

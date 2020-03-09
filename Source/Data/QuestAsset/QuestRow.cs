@@ -135,7 +135,7 @@ namespace VisualNovelData.Data
             => this.progress.Clear();
 
         [Serializable]
-        private class QuestProgress : Collections.List<StageRow>, IQuestProgress
+        private sealed class QuestProgress : List<StageRow>, IQuestProgress
         { }
 
         public enum QuestProgressType

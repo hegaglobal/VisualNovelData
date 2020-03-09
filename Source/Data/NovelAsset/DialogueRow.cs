@@ -86,7 +86,7 @@ namespace VisualNovelData.Data
         }
 
         [Serializable]
-        private sealed class ChoiceDictionary : Collections.Dictionary<int, ChoiceRow>, IChoiceDictionary
+        private sealed class ChoiceDictionary : SerializableDictionary<int, ChoiceRow>, IChoiceDictionary
         { }
     }
 

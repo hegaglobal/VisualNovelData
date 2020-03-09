@@ -88,7 +88,7 @@ namespace VisualNovelData.Data
             => this.contents.Clear();
 
         [Serializable]
-        private sealed class CharacterDictionary : Collections.Dictionary<string, CharacterRow>, ICharacterDictionary
+        private sealed class CharacterDictionary : SerializableDictionary<string, CharacterRow>, ICharacterDictionary
         { }
     }
 }
