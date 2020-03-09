@@ -87,6 +87,13 @@ namespace VisualNovelData.Data
         public void ClearContents()
             => this.contents.Clear();
 
+        public void Clear()
+        {
+            ClearLanguages();
+            ClearContents();
+            ClearTexts();
+        }
+
         [Serializable]
         private sealed class L10nTextDictionary : SerializableDictionary<string, L10nTextRow>, IL10nTextDictionary
         { }

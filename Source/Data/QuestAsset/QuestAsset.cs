@@ -21,7 +21,7 @@ namespace VisualNovelData.Data
         public void AddQuest(QuestRow quest)
             => this.data.AddQuest(quest);
 
-        public void ClearQuests()
-            => this.data.ClearQuests();
+        public void Clear()
+            => this.data.Clear();
     }
 }

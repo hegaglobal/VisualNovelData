@@ -19,7 +19,7 @@ namespace VisualNovelData.Importer.Editor
 
         protected override QuestAsset Create(string assetPath, QuestAsset asset)
         {
-            asset.ClearQuests();
+            asset.Clear();
 
             var csvParser = CreateParser(Delimiter);
 

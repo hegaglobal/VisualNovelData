@@ -8,6 +8,6 @@
 
         void AddQuest(QuestRow quest);
 
-        void ClearQuests();
+        void Clear();
     }
 }

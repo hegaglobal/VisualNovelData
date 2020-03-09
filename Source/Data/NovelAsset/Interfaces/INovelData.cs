@@ -19,5 +19,7 @@ namespace VisualNovelData.Data
         void AddConversation(ConversationRow conversation);
 
         void ClearConversations();
+
+        void Clear();
     }
 }

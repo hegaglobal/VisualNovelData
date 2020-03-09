@@ -26,10 +26,8 @@ namespace VisualNovelData.Data
             this.quest.Add(quest.Id, quest);
         }
 
-        public void ClearQuests()
-        {
-            this.quest.Clear();
-        }
+        public void Clear()
+            => this.quest.Clear();
 
         [Serializable]
         private sealed class QuestDictionary : SerializableDictionary<string, QuestRow>, IQuestDictionary

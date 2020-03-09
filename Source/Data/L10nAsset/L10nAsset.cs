@@ -51,5 +51,8 @@ namespace VisualNovelData.Data
 
         public void ClearContents()
             => this.data.ClearContents();
+
+        public void Clear()
+            => this.data.Clear();
     }
 }

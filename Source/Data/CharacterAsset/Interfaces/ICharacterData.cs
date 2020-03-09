@@ -29,5 +29,7 @@ namespace VisualNovelData.Data
         void RemoveContent(int id);
 
         void ClearContents();
+
+        void Clear();
     }
 }

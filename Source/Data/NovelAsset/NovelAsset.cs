@@ -36,5 +36,8 @@ namespace VisualNovelData.Data
 
         public void ClearConversations()
             => this.data.ClearConversations();
+
+        public void Clear()
+            => this.data.Clear();
     }
 }

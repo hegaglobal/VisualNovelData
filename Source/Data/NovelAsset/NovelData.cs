@@ -39,9 +39,7 @@ namespace VisualNovelData.Data
         }
 
         public void ClearLanguages()
-        {
-            this.languages.Clear();
-        }
+            => this.languages.Clear();
 
         public ConversationRow GetConversation(string id)
             => this.conversations.ContainsKey(id) ? this.conversations[id] : null;
@@ -58,8 +56,12 @@ namespace VisualNovelData.Data
         }
 
         public void ClearConversations()
+            => this.conversations.Clear();
+
+        public void Clear()
         {
-            this.conversations.Clear();
+            ClearLanguages();
+            ClearConversations();
         }
 
         [Serializable]
