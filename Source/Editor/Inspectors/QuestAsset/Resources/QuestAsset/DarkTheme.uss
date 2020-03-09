@@ -1,0 +1,25 @@
+﻿.quest-folder {
+    background-color: #5f5f5f;
+    color: #b4b4b4;
+    border-color: #686868;
+}
+
+.quest-header {
+    border-color: #686868;
+}
+
+.quest-content {
+    background-color: #555555;
+}
+
+.stage {
+    background-color: #414141;
+}
+
+.stage > TextInput {
+    color: #82ffdd;
+}
+
+.event-container {
+    background-color: #e3e3e3;
+}

@@ -1,0 +1,191 @@
+.novel-asset-folder {
+    margin-top: 15px;
+}
+
+.novel-asset-content {
+    margin-left: 0;
+}
+
+.conversation-folder {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    border-radius: 4px;
+    border-width: 1px;
+    margin-top: 6px;
+}
+
+.conversation-folder > .unity-toggle {
+    margin-left: 0;
+}
+
+.conversation-header {
+    padding-top: 2px;
+}
+
+.conversation-header:checked {
+    border-bottom-width: 1px;
+}
+
+.conversation-content {
+    margin-left: 0;
+}
+
+.language-popup {
+    margin-top: 3px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+}
+
+.language-popup > Label {
+    min-width: 148px;
+}
+
+.dialogue-folder {
+    display: flex;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.choice-folder {
+    display: flex;
+    padding-top: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.choice-content {
+    padding-bottom: 2px;
+}
+
+.dialogue-folder .unity-toggle {
+    margin-left: 0;
+}
+
+.dialogue-header {
+    margin-right: 4px;
+    flex-shrink: 1;
+}
+
+.dialogue-content {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 0;
+}
+
+.dialogue-header .id,
+.dialogue-header .content,
+.choice-header .id,
+.choice-header .go-to {
+    display: flex;
+    margin-bottom: 0;
+}
+
+.dialogue-header .id {
+    margin-right: 0;
+    min-width: 133px;
+}
+
+.dialogue-header .content {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.id TextInput,
+.actor TextInput,
+.action TextInput,
+.go-to TextInput,
+.event TextInput {
+    background-image: none;
+    padding-left: 0;
+}
+
+.id TextInput {
+    padding-left: 3px;
+}
+
+.actor {
+    margin-top: 4px;
+}
+
+.choice-container > Label,
+.actor, .action,
+.default-choice,
+.event-trigger-container {
+    margin-left: 15px;
+    margin-right: 4px;
+}
+
+.choice-header,
+.choice-content {
+    margin-right: 4px;
+}
+
+.choice-header {
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.choice-content {
+    margin-top: 2px;
+}
+
+.content TextInput,
+.default-choice .content,
+.choice .content,
+.event TextInput{
+    white-space: normal;
+}
+
+.choice-folder .content {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.choice-container .choice-folder {
+    padding-left: 15px;
+}
+
+.choice-folder .choice-header .id,
+.choice-folder .go-to > Label {
+    margin-right: 0;
+    min-width: 118px;
+}
+
+.dialogue-header .id TextInput,
+.choice .choice-header .id TextInput {
+    -unity-text-align: upper-left;
+}
+
+.choice-container > Label {
+    -unity-font-style: normal;
+}
+
+.trigger-container {
+    flex-direction: row;
+}
+
+.on-trigger {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 2px 0 2px;
+}
+
+.on-trigger > Label {
+    align-self: center;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.event {
+    margin: 0;
+    padding: 1px 0 1px 0;
+}
+
+.event > TextInput {
+    -unity-text-align: middle-center;
+}

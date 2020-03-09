@@ -1,0 +1,5 @@
+﻿.l10n-text-folder {
+    background-color: #5f5f5f;
+    color: #b4b4b4;
+    border-color: #686868;
+}

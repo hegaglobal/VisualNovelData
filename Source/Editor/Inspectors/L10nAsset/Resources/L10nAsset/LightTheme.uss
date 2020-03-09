@@ -1,0 +1,36 @@
+﻿.l10n-asset-folder {
+    margin-top: 15px;
+}
+
+.l10n-asset-content {
+    margin-left: 0;
+}
+
+.l10n-text-folder {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    border-radius: 4px;
+    border-width: 1px;
+    margin-top: 6px;
+}
+
+.l10n-text-folder > .unity-toggle {
+    margin-left: 0;
+}
+
+.l10n-text-header {
+    padding-top: 2px;
+}
+
+.l10n-text-header:checked {
+    border-bottom-width: 1px;
+}
+
+.l10n-text-content {
+    margin-left: 0;
+}
+
+.l10n-text-content > * {
+    margin-left: 15px;
+}

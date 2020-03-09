@@ -1,0 +1,5 @@
+﻿.character-folder {
+    background-color: #dfdfdf;
+    color: #000000;
+    border-color: #b2b2b2;
+}

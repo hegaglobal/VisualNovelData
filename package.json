@@ -1,0 +1,18 @@
+{
+  "name": "com.grashaar.visual-novel-data",
+  "displayName": "Visual Novel Data",
+  "version": "0.0.1",
+  "unity": "2019.1",
+  "license": "MIT",
+  "description": "",
+  "keywords": [
+    "uiman",
+    "unity"
+  ],
+  "dependencies": {
+    "com.grashaar.unity-core": "https://grashaar@github.com/grashaar/UnityCore.git#0.0.4",
+    "com.bytefish.tinycsvparser": "https://grashaar@github.com/grashaar/TinyCsvParser.git#0.0.2"
+  },
+  "category": "Unity",
+  "author": "Grashaar <grashaar@outlook.com> (https://github.com/grashaar)"
+}

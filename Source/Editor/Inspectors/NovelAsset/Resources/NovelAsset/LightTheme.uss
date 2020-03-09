@@ -1,0 +1,31 @@
+﻿.conversation-folder {
+    background-color: #dfdfdf;
+    color: #000000;
+    border-color: #b2b2b2;
+}
+
+.conversation-header {
+    border-color: #b2b2b2;
+}
+
+.dialogue-folder {
+    background-color: #d2d2d2;
+    border-color: #b2b2b2;
+}
+
+.choice-folder {
+    background-color: #c1c1c1;
+}
+
+.dialogue-header .id TextInput,
+.go-to TextInput {
+    color: #0000ff;
+}
+
+.on-trigger {
+    background-color: #c1c1c1;
+}
+
+.event {
+    background-color: #e3e3e3;
+}

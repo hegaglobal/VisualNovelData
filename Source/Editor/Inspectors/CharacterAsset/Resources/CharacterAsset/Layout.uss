@@ -1,0 +1,36 @@
+﻿.character-asset-folder {
+    margin-top: 15px;
+}
+
+.character-asset-content {
+    margin-left: 0;
+}
+
+.character-folder {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    border-radius: 4px;
+    border-width: 1px;
+    margin-top: 6px;
+}
+
+.character-folder > .unity-toggle {
+    margin-left: 0;
+}
+
+.character-header {
+    padding-top: 2px;
+}
+
+.character-header:checked {
+    border-bottom-width: 1px;
+}
+
+.character-content {
+    margin-left: 0;
+}
+
+.character-content > * {
+    margin-left: 15px;
+}
