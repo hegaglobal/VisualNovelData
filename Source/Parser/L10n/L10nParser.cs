@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -23,12 +24,28 @@ namespace VisualNovelData.Parser
 
         public L10nData Parse(string csvData)
         {
+            var data = new L10nData();
+            Parse(csvData, data);
+
+            return data;
+        }
+
+        public void Parse(string csvData, L10nData data)
+        {
+            if (csvData == null)
+                throw new ArgumentNullException(nameof(csvData));
+
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (string.IsNullOrEmpty(csvData))
+                return;
+
             this.logger.Clear();
 
             var row = 0;
             var error = string.Empty;
             var enumerator = this.parser.Parse(csvData).GetEnumerator();
-            var data = new L10nData();
 
             L10nTextRow text = null;
 
@@ -55,15 +72,13 @@ namespace VisualNovelData.Parser
             if (!string.IsNullOrEmpty(error))
             {
                 Debug.LogError($"Vsl row {row}: {error}");
-                return null;
+                return;
             }
 
             if (this.logger.Length > 0)
             {
                 Debug.LogError(this.logger);
             }
-
-            return data;
         }
     }
 }
