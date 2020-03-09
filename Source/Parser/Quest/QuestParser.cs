@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace VisualNovelData.Parser
 {
@@ -19,10 +20,26 @@ namespace VisualNovelData.Parser
 
         public QuestData Parse(string csvData)
         {
+            var data = new QuestData();
+            Parse(csvData, data);
+
+            return data;
+        }
+
+        public void Parse(string csvData, QuestData data)
+        {
+            if (csvData == null)
+                throw new ArgumentNullException(nameof(csvData));
+
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (string.IsNullOrEmpty(csvData))
+                return;
+
             var row = 0;
             var error = string.Empty;
             var enumerator = this.parser.Parse(csvData).GetEnumerator();
-            var data = new QuestData();
 
             QuestRow quest = null;
 
@@ -49,10 +66,7 @@ namespace VisualNovelData.Parser
             if (!string.IsNullOrEmpty(error))
             {
                 Debug.LogError($"Vsq row {row}: {error}");
-                return null;
             }
-
-            return data;
         }
     }
 }
