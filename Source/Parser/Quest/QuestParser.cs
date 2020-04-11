@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace VisualNovelData.Parser
 {
     using Data;
 
-    public sealed class QuestParser : CsvParser
+    public sealed class QuestParser : CsvParser, ICsvParser<QuestData>
     {
         private readonly Parser<VsqRow> parser;
         private readonly EventParser eventParser;
@@ -16,6 +17,10 @@ namespace VisualNovelData.Parser
 
             var mapping = new VsqRow.Mapping();
             this.parser = Create<VsqRow, VsqRow.Mapping>(mapping);
+        }
+
+        public void Initialize(in Segment<string> languages)
+        {
         }
 
         public QuestData Parse(string csvData)

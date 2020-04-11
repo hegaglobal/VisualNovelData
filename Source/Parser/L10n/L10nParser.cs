@@ -7,19 +7,29 @@ namespace VisualNovelData.Parser
 {
     using Data;
 
-    public sealed class L10nParser : CsvParser
+    public sealed class L10nParser : CsvParser, ICsvParser<L10nData>
     {
-        private readonly Parser<VslRow> parser;
         private readonly StringBuilder logger;
-        private readonly Segment<string> languages;
 
-        public L10nParser(in Segment<string> languages)
+        private Parser<VslRow> parser;
+        private Segment<string> languages;
+
+        public L10nParser()
+        {
+            this.logger = new StringBuilder();
+        }
+
+        public L10nParser(in Segment<string> languages) : this()
+        {
+            Initialize(languages);
+        }
+
+        public void Initialize(in Segment<string> languages)
         {
             this.languages = languages;
 
             var mapping = new VslRow.Mapping(languages);
             this.parser = Create<VslRow, VslRow.Mapping>(mapping);
-            this.logger = new StringBuilder();
         }
 
         public L10nData Parse(string csvData)

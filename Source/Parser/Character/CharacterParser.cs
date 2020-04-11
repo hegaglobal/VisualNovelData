@@ -7,19 +7,29 @@ namespace VisualNovelData.Parser
 {
     using Data;
 
-    public sealed class CharacterParser : CsvParser
+    public sealed class CharacterParser : CsvParser, ICsvParser<CharacterData>
     {
-        private readonly Parser<VscRow> parser;
         private readonly StringBuilder logger;
-        private readonly Segment<string> languages;
 
-        public CharacterParser(in Segment<string> languages)
+        private Parser<VscRow> parser;
+        private Segment<string> languages;
+
+        public CharacterParser()
+        {
+            this.logger = new StringBuilder();
+        }
+
+        public CharacterParser(in Segment<string> languages) : this()
+        {
+            Initialize(languages);
+        }
+
+        public void Initialize(in Segment<string> languages)
         {
             this.languages = languages;
 
             var mapping = new VscRow.Mapping(languages);
             this.parser = Create<VscRow, VscRow.Mapping>(mapping);
-            this.logger = new StringBuilder();
         }
 
         public CharacterData Parse(string csvData)

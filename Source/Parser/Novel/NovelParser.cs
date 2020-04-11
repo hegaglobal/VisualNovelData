@@ -7,18 +7,28 @@ namespace VisualNovelData.Parser
 {
     using Data;
 
-    public sealed class NovelParser : CsvParser
+    public sealed class NovelParser : CsvParser, ICsvParser<NovelData>
     {
-        private readonly Parser<VsnRow> parser;
         private readonly StringBuilder logger;
         private readonly EventParser eventParser;
-        private readonly Segment<string> languages;
 
-        public NovelParser(in Segment<string> languages)
+        private Parser<VsnRow> parser;
+        private Segment<string> languages;
+
+        public NovelParser()
+        {
+            this.logger = new StringBuilder();
+            this.eventParser = new EventParser();
+        }
+
+        public NovelParser(in Segment<string> languages) : this()
+        {
+            Initialize(languages);
+        }
+
+        public void Initialize(in Segment<string> languages)
         {
             this.languages = languages;
-            this.eventParser = new EventParser();
-            this.logger = new StringBuilder();
 
             var mapping = new VsnRow.Mapping(languages);
             this.parser = Create<VsnRow, VsnRow.Mapping>(mapping);
