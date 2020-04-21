@@ -8,7 +8,7 @@ namespace VisualNovelData.EventSystems
 
     public sealed class QuestEventSystem
     {
-        public QuestAsset QuestAsset { get; private set; }
+        public IQuestData QuestData { get; private set; }
 
         public EventSystem EventSystem { get; private set; }
 
@@ -17,17 +17,17 @@ namespace VisualNovelData.EventSystems
         public QuestEventSystem(EventSystem eventSystem)
             => Set(eventSystem);
 
-        public QuestEventSystem(QuestAsset questAsset)
-            => Set(questAsset);
+        public QuestEventSystem(IQuestData questData)
+            => Set(questData);
 
-        public QuestEventSystem(QuestAsset questAsset, EventSystem eventSystem)
+        public QuestEventSystem(IQuestData questData, EventSystem eventSystem)
         {
-            Set(questAsset);
+            Set(questData);
             Set(eventSystem);
         }
 
-        public void Set(QuestAsset questAsset)
-            => this.QuestAsset = questAsset != null ? questAsset : throw new ArgumentNullException(nameof(questAsset));
+        public void Set(IQuestData questData)
+            => this.QuestData = questData ?? throw new ArgumentNullException(nameof(questData));
 
         public void Set(EventSystem eventSystem)
             => this.EventSystem = eventSystem ?? throw new ArgumentNullException(nameof(eventSystem));
@@ -39,13 +39,13 @@ namespace VisualNovelData.EventSystems
 
             quest = default;
 
-            if (!this.QuestAsset)
+            if (this.QuestData == null)
             {
                 Debug.LogWarning("Cannot get quest. No QuestAsset is assigned");
                 return false;
             }
 
-            quest = this.QuestAsset.GetQuest(questId);
+            quest = this.QuestData.GetQuest(questId);
 
             if (quest == null)
             {
@@ -90,7 +90,7 @@ namespace VisualNovelData.EventSystems
             }
         }
 
-        private void Invoke(in Segment<Data.Event> events, int progress)
+        private void Invoke(in Segment<Event> events, int progress)
         {
             if (events.Count <= 0)
                 return;
