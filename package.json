@@ -1,7 +1,7 @@
 {
   "name": "com.hegaglobal.visual-novel-data",
   "displayName": "Visual Novel Data",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "unity": "2019.1",
   "license": "MIT",
   "description": "",
@@ -10,8 +10,8 @@
     "unity"
   ],
   "dependencies": {
-    "com.grashaar.unity-core": "https://grashaar@github.com/grashaar/UnityCore.git#0.0.4",
-    "com.bytefish.tinycsvparser": "https://grashaar@github.com/grashaar/TinyCsvParser.git#0.0.2"
+    "com.grashaar.unity-core": "https://grashaar@github.com/grashaar/UnityCore.git#0.0.5",
+    "com.bytefish.tinycsvparser": "2.5.2"
   },
   "category": "Unity",
   "author": "Hega Global <hegaglobal> (https://github.com/hegaglobal)"
