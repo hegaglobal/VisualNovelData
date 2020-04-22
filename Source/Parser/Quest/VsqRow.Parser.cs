@@ -74,8 +74,10 @@ namespace VisualNovelData.Parser
 
             if (!this.Stage.TryConvertProgressType(out var progressType))
             {
-                this.error.AppendLine(string.Format("Invoke type can only be either empty, {0}, or {1}",
-                                        ProgressTypeExtensions.StartToCurrent, ProgressTypeExtensions.OnlyCurrent));
+                this.error.AppendLine(string.Format("Invoke type can only be either empty, {0}, {1}, or {2}",
+                                      ProgressTypeExtensions.ALL,
+                                      ProgressTypeExtensions.START_TO_CURRENT,
+                                      ProgressTypeExtensions.ONLY_CURRENT));
                 return null;
             }
 

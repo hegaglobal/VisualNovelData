@@ -7,8 +7,6 @@ namespace VisualNovelData.Data
     [Serializable]
     public class QuestRow : DataRow
     {
-        private readonly static Segment<StageRow> _empty = Segment<StageRow>.Empty;
-
         [SerializeField]
         private string id = string.Empty;
 
@@ -16,7 +14,7 @@ namespace VisualNovelData.Data
             => this.id;
 
         [SerializeField]
-        private QuestProgressType progressType = QuestProgressType.StartToCurrent;
+        private QuestProgressType progressType = QuestProgressType.All;
 
         public QuestProgressType ProgressType
             => this.progressType;
@@ -65,19 +63,28 @@ namespace VisualNovelData.Data
             return null;
         }
 
+        public Segment<StageRow> GetEmptyStages()
+            => this.progress.Slice(0, 0);
+
+        public Segment<StageRow> GetStages()
+            => this.progress;
+
         public Segment<StageRow> GetStages(int fromIndex, int toIndex)
         {
             if (fromIndex < 0 || fromIndex >= this.progress.Count)
-                return _empty;
+                return GetEmptyStages();
 
             if (toIndex < 0 || toIndex >= this.progress.Count)
-                return _empty;
+                return GetEmptyStages();
 
             if (fromIndex > toIndex)
             {
                 Debug.LogWarning($"{nameof(fromIndex)} must be less than or equal to {nameof(toIndex)}");
-                return _empty;
+                return GetEmptyStages();
             }
+
+            if (fromIndex == toIndex)
+                return GetEmptyStages();
 
             return this.progress.Slice(fromIndex, toIndex - fromIndex + 1);
         }
@@ -112,7 +119,7 @@ namespace VisualNovelData.Data
         public Segment<StageRow> GetStagesToCurrent(int progress, int fromIndex = 0)
         {
             if (fromIndex < 0 || fromIndex >= this.progress.Count)
-                return _empty;
+                return GetEmptyStages();
 
             var index = GetCurrentStageIndex(progress);
             var count = index - fromIndex + 1;
@@ -141,14 +148,19 @@ namespace VisualNovelData.Data
         public enum QuestProgressType
         {
             /// <summary>
+            /// Should invoke all stages
+            /// </summary>
+            All,
+
+            /// <summary>
             /// Should invoke all the stages from start to the current progress
             /// </summary>
-            StartToCurrent = 0,
+            StartToCurrent,
 
             /// <summary>
             /// Should only invoke the stage at the current progress
             /// </summary>
-            OnlyCurrent = 1
+            OnlyCurrent
         }
     }
 }

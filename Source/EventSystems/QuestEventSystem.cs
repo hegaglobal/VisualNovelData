@@ -61,32 +61,33 @@ namespace VisualNovelData.EventSystems
             if (!TryGetQuest(questId, out var quest))
                 return;
 
+            ISegment<StageRow> stages;
+
             switch (quest.ProgressType)
             {
+                case QuestRow.QuestProgressType.All:
+                    stages = quest.GetStages();
+                    break;
+
                 case QuestRow.QuestProgressType.StartToCurrent:
-                {
-                    var stages = quest.GetStagesToCurrent(progress);
-
-                    foreach (var stage in stages)
-                    {
-                        if (CanSkip(stage, progress))
-                            continue;
-
-                        Invoke(stage.Events.AsSegment(), progress);
-                    }
-                }
-                break;
+                    stages = quest.GetStagesToCurrent(progress);
+                    break;
 
                 case QuestRow.QuestProgressType.OnlyCurrent:
-                {
-                    var stage = quest.GetCurrentStage(progress);
+                    stages = quest.GetCurrentStage(progress).AsSegment1();
+                    break;
 
-                    if (CanSkip(stage, progress))
-                        return;
+                default:
+                    stages = quest.GetEmptyStages();
+                    break;
+            }
 
-                    Invoke(stage.Events.AsSegment(), progress);
-                }
-                break;
+            foreach (var stage in stages)
+            {
+                if (CanSkip(stage, progress))
+                    continue;
+
+                Invoke(stage.Events.AsSegment(), progress);
             }
         }
 
