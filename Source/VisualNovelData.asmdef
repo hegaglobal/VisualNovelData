@@ -1,7 +1,7 @@
 {
     "name": "VisualNovelData",
     "references": [
-        "UnityCore",
+        "Unity.Supplements",
         "TinyCsvParser"
     ],
     "optionalUnityReferences": [],
