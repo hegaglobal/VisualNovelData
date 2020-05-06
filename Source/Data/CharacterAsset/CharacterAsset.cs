@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace VisualNovelData.Data
@@ -8,51 +9,94 @@ namespace VisualNovelData.Data
         public const string Extension = "vsc";
 
         [SerializeField]
-        private CharacterData data = new CharacterData();
-
-        public ReadCharacterData Data
-            => this.data;
+        private LanguageList languages = new LanguageList();
 
         public ILanguageList Languages
-            => this.data.Languages;
+            => this.languages;
+
+        [SerializeField]
+        private CharacterDictionary characters = new CharacterDictionary();
 
         public ICharacterDictionary Characters
-            => this.data.Characters;
+            => this.characters;
+
+        [SerializeField]
+        private ContentDictionary contents = new ContentDictionary();
 
         public IContentDictionary Contents
-            => this.data.Contents;
+            => this.contents;
 
         public CharacterRow GetCharacter(string id)
-            => this.data.GetCharacter(id);
+            => id == null ? null :
+               this.characters.ContainsKey(id) ? this.characters[id] : null;
 
         public void AddCharacter(CharacterRow character)
-            => this.data.AddCharacter(character);
+        {
+            if (character == null)
+                throw new ArgumentNullException(nameof(character));
+
+            if (character.Id == null)
+                return;
+
+            this.characters[character.Id] = character;
+        }
 
         public void ClearCharacters()
-            => this.data.ClearCharacters();
+            => this.characters.Clear();
 
         public void AddLanguage(string language)
-            => this.data.AddLanguage(language);
+        {
+            if (this.languages.Contains(language))
+                return;
+
+            this.languages.Add(language);
+        }
 
         public void AddLanguages(in Segment<string> languages)
-            => this.data.AddLanguages(languages);
+        {
+            for (var i = 0; i < languages.Count; i++)
+            {
+                if (this.languages.Contains(languages[i]))
+                    continue;
+
+                this.languages.Add(languages[i]);
+            }
+        }
 
         public void ClearLanguages()
-            => this.data.ClearLanguages();
+            => this.languages.Clear();
 
         public ContentRow GetContent(int id)
-            => this.data.GetContent(id);
+            => this.contents.ContainsKey(id) ? this.contents[id] : null;
 
         public void AddContent(ContentRow content)
-            => this.data.AddContent(content);
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            this.contents[content.Id] = content;
+        }
 
         public void RemoveContent(int id)
-            => this.data.RemoveContent(id);
+        {
+            if (!this.contents.ContainsKey(id))
+                return;
+
+            this.contents.Remove(id);
+        }
 
         public void ClearContents()
-            => this.data.ClearContents();
+            => this.contents.Clear();
 
         public void Clear()
-            => this.data.Clear();
+        {
+            ClearLanguages();
+            ClearCharacters();
+            ClearContents();
+        }
+
+        [Serializable]
+        private sealed class CharacterDictionary : SerializableDictionary<string, CharacterRow>, ICharacterDictionary
+        { }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace VisualNovelData.Data
 {
@@ -7,21 +8,30 @@ namespace VisualNovelData.Data
         public const string Extension = "vsq";
 
         [SerializeField]
-        private QuestData data = new QuestData();
-
-        public ReadQuestData Data
-            => this.data;
+        private QuestDictionary quest = new QuestDictionary();
 
         public IQuestDictionary Quests
-            => this.data.Quests;
+            => this.quest;
 
         public QuestRow GetQuest(string id)
-            => this.data.GetQuest(id);
+            => this.quest.ContainsKey(id) ? this.quest[id] : null;
 
         public void AddQuest(QuestRow quest)
-            => this.data.AddQuest(quest);
+        {
+            if (quest == null)
+                throw new ArgumentNullException(nameof(quest));
+
+            if (quest.Id == null || this.quest.ContainsKey(quest.Id))
+                return;
+
+            this.quest.Add(quest.Id, quest);
+        }
 
         public void Clear()
-            => this.data.Clear();
+            => this.quest.Clear();
+
+        [Serializable]
+        private sealed class QuestDictionary : SerializableDictionary<string, QuestRow>, IQuestDictionary
+        { }
     }
 }

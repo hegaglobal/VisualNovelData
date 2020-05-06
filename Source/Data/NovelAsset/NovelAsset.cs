@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace VisualNovelData.Data
@@ -8,36 +9,64 @@ namespace VisualNovelData.Data
         public const string Extension = "vsn";
 
         [SerializeField]
-        private NovelData data = new NovelData();
-
-        public ReadNovelData Data
-            => this.data;
+        private LanguageList languages = new LanguageList();
 
         public ILanguageList Languages
-            => this.data.Languages;
+            => this.languages;
+
+        [SerializeField]
+        private ConversationDictionary conversations = new ConversationDictionary();
 
         public IConversationDictionary Conversations
-            => this.data.Conversations;
+            => this.conversations;
 
         public void AddLanguage(string language)
-            => this.data.AddLanguage(language);
+        {
+            if (this.languages.Contains(language))
+                return;
+
+            this.languages.Add(language);
+        }
 
         public void AddLanguages(in Segment<string> languages)
-            => this.data.AddLanguages(languages);
+        {
+            for (var i = 0; i < languages.Count; i++)
+            {
+                if (this.languages.Contains(languages[i]))
+                    continue;
+
+                this.languages.Add(languages[i]);
+            }
+        }
 
         public void ClearLanguages()
-            => this.data.ClearLanguages();
+            => this.languages.Clear();
 
         public ConversationRow GetConversation(string id)
-            => this.data.GetConversation(id);
+            => this.conversations.ContainsKey(id) ? this.conversations[id] : null;
 
         public void AddConversation(ConversationRow conversation)
-            => this.data.AddConversation(conversation);
+        {
+            if (conversation == null)
+                throw new ArgumentNullException(nameof(conversation));
+
+            if (conversation.Id == null)
+                return;
+
+            this.conversations[conversation.Id] = conversation;
+        }
 
         public void ClearConversations()
-            => this.data.ClearConversations();
+            => this.conversations.Clear();
 
         public void Clear()
-            => this.data.Clear();
+        {
+            ClearLanguages();
+            ClearConversations();
+        }
+
+        [Serializable]
+        private sealed class ConversationDictionary : SerializableDictionary<string, ConversationRow>, IConversationDictionary
+        { }
     }
 }
