@@ -34,6 +34,14 @@ namespace VisualNovelData.Data.Editor
             }
         }
 
+        private class DelayElement : ReadOnlyTextField
+        {
+            public DelayElement(string label) : base(label)
+            {
+                AddToClassList("delay");
+            }
+        }
+
         private class ActorElement : ReadOnlyTextField
         {
             public ActorElement(string label) : base(label)

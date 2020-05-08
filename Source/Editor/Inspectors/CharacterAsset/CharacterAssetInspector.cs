@@ -60,6 +60,7 @@ namespace VisualNovelData.Data.Editor
 
             CreateAvatarGUI(characterElem.Content, character);
             CreateModelGUI(characterElem.Content, character);
+            CreateBackgroundGUI(characterElem.Content, character);
             CreateContentGUI(characterElem.Content, asset, character, contentElems, languages[0]);
 
             root.Add(characterElem);
@@ -80,6 +81,14 @@ namespace VisualNovelData.Data.Editor
             root.Add(modelElem);
 
             return modelElem;
+        }
+
+        private BackgroundElement CreateBackgroundGUI(VisualElement root, CharacterRow character)
+        {
+            var backgroundElem = new BackgroundElement("Background") { value = character.Background };
+            root.Add(backgroundElem);
+
+            return backgroundElem;
         }
 
         private ContentElement CreateContentGUI(VisualElement root, CharacterAsset asset, CharacterRow character,

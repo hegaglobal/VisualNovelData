@@ -13,35 +13,28 @@ namespace VisualNovelData.Importer.Editor
     [ScriptedImporter(1, QuestAsset.Extension)]
     public class VsqImporter : CustomImporter<QuestAsset>
     {
-        public const char Delimiter = ',';
-
         private readonly EventParser eventParser = new EventParser();
 
         protected override QuestAsset Create(string assetPath, QuestAsset asset)
         {
             asset.Clear();
 
-            var csvParser = CreateParser(Delimiter);
+            var csvParser = CreateParser();
+            var csvData = File.ReadAllText(assetPath);
 
-            using (var stream = File.Open(assetPath, FileMode.Open, FileAccess.Read))
-            {
-                asset = Parse(csvParser, stream, asset);
-            }
-
+            asset = Parse(csvParser, csvData, asset);
             return asset;
         }
 
-        private CsvParser<VsqRow> CreateParser(char columnSeparator)
+        private Parser<VsqRow> CreateParser()
         {
-            var parserOptions = new CsvParserOptions(true, columnSeparator);
-            var mapper = new VsqRow.Mapping();
-
-            return new CsvParser<VsqRow>(parserOptions, mapper);
+            var mapping = new VsqRow.Mapping();
+            return CsvParser.Create<VsqRow, VsqRow.Mapping>(mapping);
         }
 
-        private QuestAsset Parse(CsvParser<VsqRow> parser, FileStream stream, QuestAsset asset)
+        private QuestAsset Parse(Parser<VsqRow> parser, string csvData, QuestAsset asset)
         {
-            var enumerator = parser.ReadFromStream(stream, Encoding.UTF8, true).GetEnumerator();
+            var enumerator = parser.Parse(csvData).GetEnumerator();
             var row = 0;
             var error = string.Empty;
 

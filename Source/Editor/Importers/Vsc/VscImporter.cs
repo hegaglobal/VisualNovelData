@@ -14,8 +14,6 @@ namespace VisualNovelData.Importer.Editor
     [ScriptedImporter(1, CharacterAsset.Extension)]
     public sealed class VscImporter : CustomImporter<CharacterAsset>
     {
-        public const char Delimiter = ',';
-
         protected override CharacterAsset Create(string assetPath, CharacterAsset asset)
         {
             asset.ClearCharacters();
@@ -25,29 +23,25 @@ namespace VisualNovelData.Importer.Editor
 
             if (languages.Count > 0)
             {
-                var csvParser = CreateParser(Delimiter, languages);
+                var csvParser = CreateParser(languages);
+                var csvData = File.ReadAllText(assetPath);
 
-                using (var stream = File.Open(assetPath, FileMode.Open, FileAccess.Read))
-                {
-                    asset = Parse(csvParser, stream, asset, languages);
-                    asset.AddLanguages(languages);
-                }
+                asset = Parse(csvParser, csvData, asset, languages);
+                asset.AddLanguages(languages);
             }
 
             return asset;
         }
 
-        private CsvParser<VscRow> CreateParser(char columnSeparator, List<string> languages)
+        private Parser<VscRow> CreateParser(List<string> languages)
         {
-            var parserOptions = new CsvParserOptions(true, columnSeparator);
-            var mapper = new VscRow.Mapping(languages);
-
-            return new CsvParser<VscRow>(parserOptions, mapper);
+            var mapping = new VscRow.Mapping(languages);
+            return CsvParser.Create<VscRow, VscRow.Mapping>(mapping);
         }
 
-        private CharacterAsset Parse(CsvParser<VscRow> parser, FileStream stream, CharacterAsset asset, List<string> languages)
+        private CharacterAsset Parse(Parser<VscRow> parser, string csvData, CharacterAsset asset, List<string> languages)
         {
-            var enumerator = parser.ReadFromStream(stream, Encoding.UTF8, true).GetEnumerator();
+            var enumerator = parser.Parse(csvData).GetEnumerator();
             var row = 0;
             var error = string.Empty;
             var logger = new StringBuilder();

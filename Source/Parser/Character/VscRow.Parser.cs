@@ -32,7 +32,8 @@ namespace VisualNovelData.Parser
                     row,
                     this.Character ?? string.Empty,
                     this.Avatar ?? string.Empty,
-                    this.Model ?? string.Empty
+                    this.Model ?? string.Empty,
+                    this.Background ?? string.Empty
                 );
 
                 data.AddCharacter(character);

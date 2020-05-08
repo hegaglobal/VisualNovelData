@@ -79,6 +79,9 @@ namespace VisualNovelData.Data.Editor
 
             if (!dialogue.IsEnd())
             {
+                var delayElem = new DelayElement("Delay") { value = dialogue.Delay.ToString() };
+                dialogueElem.Add(delayElem);
+
                 var actorElem = new ActorElement("Actor") { value = dialogue.Actor };
                 dialogueElem.Add(actorElem);
 

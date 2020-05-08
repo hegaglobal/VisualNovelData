@@ -291,9 +291,9 @@ namespace VisualNovelData.Parser
             if (this.IsError)
                 return null;
 
-            var newDialogue = new DialogueRow(row, id, this.Actor?.Trim() ?? string.Empty,
-                                           this.Action?.Trim() ?? string.Empty,
-                                           eventsOnStart, eventsOnEnd);
+            var newDialogue = new DialogueRow(row, id, this.Delay ?? 0f, this.Actor?.Trim() ?? string.Empty,
+                                              this.Action?.Trim() ?? string.Empty,
+                                              eventsOnStart, eventsOnEnd);
 
             var newChoice = ParseChoice(newDialogue, row, goToList, logger);
 

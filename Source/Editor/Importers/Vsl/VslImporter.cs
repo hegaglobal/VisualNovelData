@@ -14,8 +14,6 @@ namespace VisualNovelData.Importer.Editor
     [ScriptedImporter(1, L10nAsset.Extension)]
     public sealed class VslImporter : CustomImporter<L10nAsset>
     {
-        public const char Delimiter = ',';
-
         protected override L10nAsset Create(string assetPath, L10nAsset asset)
         {
             asset.ClearTexts();
@@ -25,29 +23,25 @@ namespace VisualNovelData.Importer.Editor
 
             if (languages.Count > 0)
             {
-                var csvParser = CreateParser(Delimiter, languages);
+                var csvParser = CreateParser(languages);
+                var csvData = File.ReadAllText(assetPath);
 
-                using (var stream = File.Open(assetPath, FileMode.Open, FileAccess.Read))
-                {
-                    asset = Parse(csvParser, stream, asset, languages);
-                    asset.AddLanguages(languages);
-                }
+                asset = Parse(csvParser, csvData, asset, languages);
+                asset.AddLanguages(languages);
             }
 
             return asset;
         }
 
-        private CsvParser<VslRow> CreateParser(char columnSeparator, List<string> languages)
+        private Parser<VslRow> CreateParser(List<string> languages)
         {
-            var parserOptions = new CsvParserOptions(true, columnSeparator);
-            var mapper = new VslRow.Mapping(languages);
-
-            return new CsvParser<VslRow>(parserOptions, mapper);
+            var mapping = new VslRow.Mapping(languages);
+            return CsvParser.Create<VslRow, VslRow.Mapping>(mapping);
         }
 
-        private L10nAsset Parse(CsvParser<VslRow> parser, FileStream stream, L10nAsset asset, List<string> languages)
+        private L10nAsset Parse(Parser<VslRow> parser, string csvData, L10nAsset asset, List<string> languages)
         {
-            var enumerator = parser.ReadFromStream(stream, Encoding.UTF8, true).GetEnumerator();
+            var enumerator = parser.Parse(csvData).GetEnumerator();
             var row = 0;
             var error = string.Empty;
             var logger = new StringBuilder();

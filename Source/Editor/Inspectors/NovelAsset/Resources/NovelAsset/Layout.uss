@@ -95,6 +95,7 @@
 }
 
 .id TextInput,
+.delay TextInput,
 .actor TextInput,
 .action TextInput,
 .go-to TextInput,
@@ -107,12 +108,12 @@
     padding-left: 3px;
 }
 
-.actor {
+.delay {
     margin-top: 4px;
 }
 
 .choice-container > Label,
-.actor, .action,
+.delay, .actor, .action,
 .default-choice,
 .event-trigger-container {
     margin-left: 15px;

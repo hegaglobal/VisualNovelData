@@ -9,6 +9,8 @@ namespace VisualNovelData.Parser
 
         public string Dialogue { get; private set; }
 
+        public float? Delay { get; private set; }
+
         public string Actor { get; private set; }
 
         public string Action { get; private set; }
@@ -25,7 +27,7 @@ namespace VisualNovelData.Parser
 
         public class Mapping : CsvMapping<VsnRow>
         {
-            public const int ContentsStartIndex = 9;
+            public const int ContentsStartIndex = 10;
 
             public Mapping(Segment<string> languages) : base()
             {
@@ -33,6 +35,7 @@ namespace VisualNovelData.Parser
 
                 MapProperty(++col, x => x.Conversation, (x, v) => x.Conversation = v);
                 MapProperty(++col, x => x.Dialogue, (x, v) => x.Dialogue = v);
+                MapProperty(++col, x => x.Delay, (x, v) => x.Delay = v);
                 MapProperty(++col, x => x.Actor, (x, v) => x.Actor = v);
                 MapProperty(++col, x => x.Action, (x, v) => x.Action = v);
                 MapProperty(++col, x => x.Choice, (x, v) => x.Choice = v);

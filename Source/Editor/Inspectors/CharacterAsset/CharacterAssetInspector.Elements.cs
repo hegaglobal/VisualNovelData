@@ -32,5 +32,13 @@
                 AddToClassList("model");
             }
         }
+
+        private class BackgroundElement : ReadOnlyTextField
+        {
+            public BackgroundElement(string label) : base(label)
+            {
+                AddToClassList("background");
+            }
+        }
     }
 }

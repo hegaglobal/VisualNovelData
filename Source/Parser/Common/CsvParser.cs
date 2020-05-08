@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using TinyCsvParser;
 using TinyCsvParser.Mapping;
 using TinyCsvParser.Tokenizer.RFC4180;
@@ -8,7 +7,7 @@ namespace VisualNovelData.Parser
 {
     public abstract class CsvParser
     {
-        protected static Parser<TEntity> Create<TEntity, TMapping>(TMapping mapping)
+        public static Parser<TEntity> Create<TEntity, TMapping>(TMapping mapping)
             where TEntity : class, new()
             where TMapping : CsvMapping<TEntity>
         {
@@ -21,7 +20,7 @@ namespace VisualNovelData.Parser
             return new Parser<TEntity>(parser, readerOptions);
         }
 
-        protected static Parser<TEntity> Create<TEntity, TMapping>(TMapping mapping,
+        public static Parser<TEntity> Create<TEntity, TMapping>(TMapping mapping,
                                                                    CsvParserOptions parserOptions,
                                                                    CsvReaderOptions readerOptions)
             where TEntity : class, new()
@@ -36,21 +35,6 @@ namespace VisualNovelData.Parser
             var parser = new CsvParser<TEntity>(parserOptions, mapping);
 
             return new Parser<TEntity>(parser, readerOptions);
-        }
-
-        protected class Parser<T>
-        {
-            private readonly CsvParser<T> parser;
-            private readonly CsvReaderOptions readerOptions;
-
-            public Parser(CsvParser<T> parser, CsvReaderOptions readerOptions)
-            {
-                this.parser = parser;
-                this.readerOptions = readerOptions;
-            }
-
-            public IEnumerable<CsvMappingResult<T>> Parse(string csvData)
-                => this.parser.ReadFromString(this.readerOptions, csvData);
         }
     }
 }

@@ -11,11 +11,13 @@ namespace VisualNovelData.Parser
 
         public string Model { get; private set; }
 
+        public string Background { get; private set; }
+
         public string[] Contents { get; private set; }
 
         public class Mapping : CsvMapping<VscRow>
         {
-            public const int ContentsStartIndex = 4;
+            public const int ContentsStartIndex = 5;
 
             public Mapping(Segment<string> languages) : base()
             {
@@ -24,6 +26,7 @@ namespace VisualNovelData.Parser
                 MapProperty(++col, x => x.Character, (x, v) => x.Character = v);
                 MapProperty(++col, x => x.Avatar, (x, v) => x.Avatar = v);
                 MapProperty(++col, x => x.Model, (x, v) => x.Model = v);
+                MapProperty(++col, x => x.Background, (x, v) => x.Background = v);
 
                 if (languages.Count > 0)
                 {
