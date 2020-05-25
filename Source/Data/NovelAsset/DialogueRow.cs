@@ -32,6 +32,12 @@ namespace VisualNovelData.Data
             => this.action;
 
         [SerializeField]
+        private int highlight;
+
+        public int Highlight
+            => this.highlight;
+
+        [SerializeField]
         private EventList eventsOnStart = new EventList();
 
         public IEventList EventsOnStart
@@ -57,13 +63,14 @@ namespace VisualNovelData.Data
             this.id = id;
         }
 
-        public DialogueRow(int row, string id, float delay, string actor, string action,
+        public DialogueRow(int row, string id, float delay, string actor, string action, int highlight,
                            IReadOnlyList<Event> eventsOnStart = null, IReadOnlyList<Event> eventsOnEnd = null)
             : this(row, id)
         {
             this.delay = delay;
             this.actor = actor;
             this.action = action;
+            this.highlight = highlight;
 
             if (eventsOnStart != null)
             {
@@ -106,7 +113,7 @@ namespace VisualNovelData.Data
         { }
 
         public EndDialogueRow(int row, string id, IReadOnlyList<Event> eventsOnStart = null, IReadOnlyList<Event> eventsOnEnd = null)
-            : base(row, id, 0f, string.Empty, string.Empty, eventsOnStart, eventsOnEnd)
+            : base(row, id, 0f, string.Empty, string.Empty, -1, eventsOnStart, eventsOnEnd)
         { }
 
         public sealed override void AddChoice(ChoiceRow option) { }

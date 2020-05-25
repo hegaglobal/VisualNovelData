@@ -87,6 +87,9 @@ namespace VisualNovelData.Data.Editor
 
                 var actionElem = new ActionElement("Action") { value = dialogue.Action };
                 dialogueElem.Add(actionElem);
+
+                var highlightElem = new HighlightElement("Highlight") { value = dialogue.Highlight.ToString() };
+                dialogueElem.Add(highlightElem);
             }
 
             var defaultChoiceData = dialogue.GetChoice(0);

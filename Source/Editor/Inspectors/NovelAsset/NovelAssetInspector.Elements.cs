@@ -58,6 +58,14 @@ namespace VisualNovelData.Data.Editor
             }
         }
 
+        private class HighlightElement : ReadOnlyTextField
+        {
+            public HighlightElement(string label) : base(label)
+            {
+                AddToClassList("highlight");
+            }
+        }
+
         private class ChoiceContainer : Container
         {
             public ChoiceContainer() : base("choice")
