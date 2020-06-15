@@ -33,7 +33,6 @@ namespace VisualNovelData.EventSystems
             if (shouldOverride)
             {
                 this.events[key] = @event;
-                Debug.Log($"The existing event of key={key} has been overrided");
                 return this;
             }
 
@@ -61,7 +60,6 @@ namespace VisualNovelData.EventSystems
                 return this;
             }
 
-            Debug.Log($"The event of key={key} has been removed");
             this.events.Remove(key);
             return this;
         }
