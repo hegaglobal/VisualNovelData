@@ -59,8 +59,12 @@ namespace VisualNovelData.Data.Editor
             characterElem.Content.Add(languagesPopup);
 
             CreateAvatarGUI(characterElem.Content, character);
-            CreateModelGUI(characterElem.Content, character);
-            CreateBackgroundGUI(characterElem.Content, character);
+            CreateP1GUI(characterElem.Content, character);
+            CreateP1BackgroundGUI(characterElem.Content, character);
+            CreateP2GUI(characterElem.Content, character);
+            CreateP2BackgroundGUI(characterElem.Content, character);
+            CreateP3GUI(characterElem.Content, character);
+            CreateP3BackgroundGUI(characterElem.Content, character);
             CreateContentGUI(characterElem.Content, asset, character, contentElems, languages[0]);
 
             root.Add(characterElem);
@@ -75,17 +79,49 @@ namespace VisualNovelData.Data.Editor
             return avatarElem;
         }
 
-        private ModelElement CreateModelGUI(VisualElement root, CharacterRow character)
+        private ModelElement CreateP1GUI(VisualElement root, CharacterRow character)
         {
-            var modelElem = new ModelElement("Model") { value = character.Model };
+            var modelElem = new ModelElement("P1") { value = character.P1 };
             root.Add(modelElem);
 
             return modelElem;
         }
 
-        private BackgroundElement CreateBackgroundGUI(VisualElement root, CharacterRow character)
+        private BackgroundElement CreateP1BackgroundGUI(VisualElement root, CharacterRow character)
         {
-            var backgroundElem = new BackgroundElement("Background") { value = character.Background };
+            var backgroundElem = new BackgroundElement("P1-Background") { value = character.P1Background };
+            root.Add(backgroundElem);
+
+            return backgroundElem;
+        }
+
+        private ModelElement CreateP2GUI(VisualElement root, CharacterRow character)
+        {
+            var modelElem = new ModelElement("P2") { value = character.P2 };
+            root.Add(modelElem);
+
+            return modelElem;
+        }
+
+        private BackgroundElement CreateP2BackgroundGUI(VisualElement root, CharacterRow character)
+        {
+            var backgroundElem = new BackgroundElement("P2-Background") { value = character.P2Background };
+            root.Add(backgroundElem);
+
+            return backgroundElem;
+        }
+
+        private ModelElement CreateP3GUI(VisualElement root, CharacterRow character)
+        {
+            var modelElem = new ModelElement("P3") { value = character.P3 };
+            root.Add(modelElem);
+
+            return modelElem;
+        }
+
+        private BackgroundElement CreateP3BackgroundGUI(VisualElement root, CharacterRow character)
+        {
+            var backgroundElem = new BackgroundElement("P3-Background") { value = character.P3Background };
             root.Add(backgroundElem);
 
             return backgroundElem;

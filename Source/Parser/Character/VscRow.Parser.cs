@@ -12,7 +12,7 @@ namespace VisualNovelData.Parser
         public override string ToString()
         {
             this.stringBuilder.Clear();
-            this.stringBuilder.Append($"{this.Character} - {this.Avatar} - {this.Model}");
+            this.stringBuilder.Append($"{this.Character} - {this.Avatar} - {this.P1}");
 
             return this.stringBuilder.ToString();
         }
@@ -32,8 +32,12 @@ namespace VisualNovelData.Parser
                     row,
                     this.Character ?? string.Empty,
                     this.Avatar ?? string.Empty,
-                    this.Model ?? string.Empty,
-                    this.Background ?? string.Empty
+                    this.P1 ?? string.Empty,
+                    this.P1Background ?? string.Empty,
+                    this.P2 ?? string.Empty,
+                    this.P2Background ?? string.Empty,
+                    this.P3 ?? string.Empty,
+                    this.P3Background ?? string.Empty
                 );
 
                 data.AddCharacter(character);

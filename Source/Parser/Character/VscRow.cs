@@ -9,9 +9,17 @@ namespace VisualNovelData.Parser
 
         public string Avatar { get; private set; }
 
-        public string Model { get; private set; }
+        public string P1 { get; private set; }
 
-        public string Background { get; private set; }
+        public string P1Background { get; private set; }
+
+        public string P2 { get; private set; }
+
+        public string P2Background { get; private set; }
+
+        public string P3 { get; private set; }
+
+        public string P3Background { get; private set; }
 
         public string[] Contents { get; private set; }
 
@@ -25,8 +33,12 @@ namespace VisualNovelData.Parser
 
                 MapProperty(++col, x => x.Character, (x, v) => x.Character = v);
                 MapProperty(++col, x => x.Avatar, (x, v) => x.Avatar = v);
-                MapProperty(++col, x => x.Model, (x, v) => x.Model = v);
-                MapProperty(++col, x => x.Background, (x, v) => x.Background = v);
+                MapProperty(++col, x => x.P1, (x, v) => x.P1 = v);
+                MapProperty(++col, x => x.P1Background, (x, v) => x.P1Background = v);
+                MapProperty(++col, x => x.P2, (x, v) => x.P2 = v);
+                MapProperty(++col, x => x.P2Background, (x, v) => x.P2Background = v);
+                MapProperty(++col, x => x.P3, (x, v) => x.P3 = v);
+                MapProperty(++col, x => x.P3Background, (x, v) => x.P3Background = v);
 
                 if (languages.Count > 0)
                 {

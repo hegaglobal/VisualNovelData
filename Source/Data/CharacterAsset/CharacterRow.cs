@@ -19,26 +19,55 @@ namespace VisualNovelData.Data
             => this.avatar;
 
         [SerializeField]
-        private string model = string.Empty;
+        private string p1 = string.Empty;
 
-        public string Model
-            => this.model;
+        public string P1
+            => this.p1;
 
         [SerializeField]
-        private string background = string.Empty;
+        private string p1Background = string.Empty;
 
-        public string Background
-            => this.background;
+        public string P1Background
+            => this.p1Background;
+
+        [SerializeField]
+        private string p2 = string.Empty;
+
+        public string P2
+            => this.p2;
+
+        [SerializeField]
+        private string p2Background = string.Empty;
+
+        public string P2Background
+            => this.p2Background;
+
+        [SerializeField]
+        private string p3 = string.Empty;
+
+        public string P3
+            => this.p3;
+
+        [SerializeField]
+        private string p3Background = string.Empty;
+
+        public string P3Background
+            => this.p3Background;
 
         public int ContentId
             => this.Row;
 
-        public CharacterRow(int row, string id, string avatar, string model, string background) : base(row)
+        public CharacterRow(int row, string id, string avatar, string p1, string p1Background,
+                            string p2, string p2Background, string p3, string p3Background) : base(row)
         {
             this.id = id ?? string.Empty;
             this.avatar = avatar;
-            this.model = model ?? string.Empty;
-            this.background = background ?? string.Empty;
+            this.p1 = p1 ?? string.Empty;
+            this.p1Background = p1Background ?? string.Empty;
+            this.p2 = p2 ?? string.Empty;
+            this.p2Background = p2Background ?? string.Empty;
+            this.p3 = p3 ?? string.Empty;
+            this.p3Background = p3Background ?? string.Empty;
         }
     }
 }
