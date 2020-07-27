@@ -25,7 +25,7 @@ namespace VisualNovelData.Parser
 
         public class Mapping : CsvMapping<VscRow>
         {
-            public const int ContentsStartIndex = 5;
+            public const int ContentsStartIndex = 9;
 
             public Mapping(Segment<string> languages) : base()
             {
