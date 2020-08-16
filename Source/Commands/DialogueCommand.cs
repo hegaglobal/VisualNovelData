@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using VisualNovelData.Data;
 
-namespace VisualNovelData.CommandSystems
+namespace VisualNovelData.Commands
 {
     public abstract class DialogueCommand : BaseCommand
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VisualNovelData.CommandSystems
+namespace VisualNovelData.Commands
 {
     public abstract class BaseCommand : ICommand
     {

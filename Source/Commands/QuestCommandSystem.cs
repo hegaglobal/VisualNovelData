@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VisualNovelData.CommandSystems
+namespace VisualNovelData.Commands
 {
     using Data;
 

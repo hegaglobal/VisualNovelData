@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VisualNovelData.CommandSystems
+namespace VisualNovelData.Commands
 {
     public interface ICommand
     {
