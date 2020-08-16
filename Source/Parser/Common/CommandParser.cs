@@ -6,11 +6,11 @@ using VisualNovelData.Data;
 
 namespace VisualNovelData.Parser
 {
-    public class EventParser
+    public class CommandParser
     {
-        private static readonly char[] _eventSeparators = new[] { '[', ']' };
+        private static readonly char[] _commandSeparators = new[] { '[', ']' };
         private static readonly string[] _paramSeparators = new[] { "::" };
-        private static readonly Regex _eventConstraintRegex = new Regex(@"\<(?<constraint>\d*)\>(?<type>[^\n\r]*)", RegexOptions.Compiled);
+        private static readonly Regex _commandConstraintRegex = new Regex(@"\<(?<constraint>\d*)\>(?<type>[^\n\r]*)", RegexOptions.Compiled);
         private static readonly Regex _positionalParamRegex = new Regex(@"^{(?<position>\d+)}=(?<value>[^\n\r]*)$", RegexOptions.Compiled);
         private static readonly string[] _noParam = new string[0];
 
@@ -18,17 +18,17 @@ namespace VisualNovelData.Parser
         private readonly StringBuilder idBuilder = new StringBuilder();
         private readonly List<Parameter> parameters = new List<Parameter>();
 
-        public IReadOnlyList<Event> Parse(string eventsString, StringBuilder errorLogger)
+        public IReadOnlyList<Command> Parse(string commandStr, StringBuilder errorLogger)
         {
             this.errorLogger.Clear();
 
-            var events = eventsString?.Trim()?.Split(_eventSeparators, StringSplitOptions.RemoveEmptyEntries);
-            var list = new List<Event>();
+            var commands = commandStr?.Trim()?.Split(_commandSeparators, StringSplitOptions.RemoveEmptyEntries);
+            var list = new List<Command>();
 
-            for (var i = 0; i < events.Length; i++)
+            for (var i = 0; i < commands.Length; i++)
             {
-                var parts = events[i].Split(_paramSeparators, StringSplitOptions.RemoveEmptyEntries);
-                var @event = ToEvent(parts);
+                var parts = commands[i].Split(_paramSeparators, StringSplitOptions.RemoveEmptyEntries);
+                var command = ToCommand(parts);
 
                 if (this.errorLogger.Length > 0)
                 {
@@ -36,64 +36,64 @@ namespace VisualNovelData.Parser
                     return null;
                 }
 
-                if (@event != null)
-                    list.Add(@event);
+                if (command != null)
+                    list.Add(command);
             }
 
             return list;
         }
 
-        private Event ToEvent(in Segment<string> parts)
+        private Command ToCommand(in Segment<string> parts)
         {
             if (parts.Count <= 0)
                 return null;
 
             this.idBuilder.Clear();
-            var eventDef = parts[0];
+            var commandDef = parts[0];
 
-            if (string.IsNullOrEmpty(eventDef))
+            if (string.IsNullOrEmpty(commandDef))
             {
-                this.errorLogger.AppendLine("Event type is empty");
+                this.errorLogger.AppendLine("Command type is empty");
                 return null;
             }
 
-            var match = _eventConstraintRegex.Match(eventDef);
-            string eventType;
+            var match = _commandConstraintRegex.Match(commandDef);
             var maxConstraint = -1;
+            string commandType;
 
             if (!match.Success)
             {
-                eventType = eventDef;
+                commandType = commandDef;
             }
             else if (int.TryParse(match.Groups["constraint"].Value, out var constraint))
             {
                 maxConstraint = constraint;
-                eventType = match.Groups["type"].Value;
+                commandType = match.Groups["type"].Value;
             }
             else
             {
-                this.errorLogger.AppendLine($"Cannot convert max constraint to integer at `{eventDef}`");
+                this.errorLogger.AppendLine($"Cannot convert max constraint to integer at `{commandDef}`");
                 return null;
             }
 
             if (maxConstraint >= 0)
                 this.idBuilder.Append($"<{maxConstraint}> ");
 
-            this.idBuilder.Append(eventType);
-            var parameters = ParseParameters(eventDef, eventType, parts.Slice(1));
+            this.idBuilder.Append(commandType);
+            var parameters = ParseParameters(commandDef, commandType, parts.Slice(1));
 
             if (this.errorLogger.Length > 0)
                 return null;
 
-            return new Event(this.idBuilder.ToString(), eventType, maxConstraint, parameters);
+            return new Command(this.idBuilder.ToString(), commandType, maxConstraint, parameters);
         }
 
-        private string[] ParseParameters(string eventDef, string eventName, in Segment<string> parts)
+        private string[] ParseParameters(string commandDef, string commandName, in Segment<string> parts)
         {
             if (parts.Count < 1)
                 return _noParam;
 
-            if (!TryParseParameters(eventDef, eventName, parts))
+            if (!TryParseParameters(commandDef, commandName, parts))
                 return _noParam;
 
             if (this.parameters.Count <= 0)
@@ -153,7 +153,7 @@ namespace VisualNovelData.Parser
             return true;
         }
 
-        private bool TryParseParameters(string eventDef, string eventName, in Segment<string> parts)
+        private bool TryParseParameters(string commandDef, string commandName, in Segment<string> parts)
         {
             this.parameters.Clear();
 
@@ -163,7 +163,7 @@ namespace VisualNovelData.Parser
 
                 if (!match.Success)
                 {
-                    if (!TryAddParameter(eventName, new Parameter(i, parts[i])))
+                    if (!TryAddParameter(commandName, new Parameter(i, parts[i])))
                         return false;
 
                     continue;
@@ -173,7 +173,7 @@ namespace VisualNovelData.Parser
 
                 if (!int.TryParse(positionStr, out var position))
                 {
-                    this.errorLogger.AppendLine($"Cannot convert position `{positionStr}` to integer at `{eventDef}`");
+                    this.errorLogger.AppendLine($"Cannot convert position `{positionStr}` to integer at `{commandDef}`");
                     return false;
                 }
 
@@ -185,7 +185,7 @@ namespace VisualNovelData.Parser
 
                 var parameter = new Parameter(position - 1, match.Groups["value"].Value);
 
-                if (!TryAddParameter(eventName, parameter))
+                if (!TryAddParameter(commandName, parameter))
                     return false;
             }
 
@@ -193,11 +193,11 @@ namespace VisualNovelData.Parser
             return true;
         }
 
-        private bool TryAddParameter(string eventName, in Parameter parameter)
+        private bool TryAddParameter(string commandName, in Parameter parameter)
         {
             if (this.parameters.Contains(parameter))
             {
-                this.errorLogger.AppendLine($"Event {eventName} can only have 1 parameter at position {parameter.position}");
+                this.errorLogger.AppendLine($"Command {commandName} can only have 1 parameter at position {parameter.position}");
                 return false;
             }
 

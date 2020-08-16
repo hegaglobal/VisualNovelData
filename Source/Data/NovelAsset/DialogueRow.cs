@@ -20,40 +20,76 @@ namespace VisualNovelData.Data
             => this.delay;
 
         [SerializeField]
-        private string actor;
-
-        public string Actor
-            => this.actor;
-
-        [SerializeField]
-        private string action;
-
-        public string Action
-            => this.action;
-
-        [SerializeField]
-        private int highlight;
-
-        public int Highlight
-            => this.highlight;
-
-        [SerializeField]
-        private EventList eventsOnStart = new EventList();
-
-        public IEventList EventsOnStart
-            => this.eventsOnStart;
-
-        [SerializeField]
-        private EventList eventsOnEnd = new EventList();
-
-        public IEventList EventsOnEnd
-            => this.eventsOnEnd;
-
-        [SerializeField]
         private ChoiceDictionary choices = new ChoiceDictionary();
 
         public IChoiceDictionary Choices
             => this.choices;
+
+        [SerializeField]
+        private string actor1;
+
+        public string Actor1
+            => this.actor1;
+
+        [SerializeField]
+        private CommandList actions1 = new CommandList();
+
+        public ICommandList Actions1
+            => this.actions1;
+
+        [SerializeField]
+        private string actor2;
+
+        public string Actor2
+            => this.actor2;
+
+        [SerializeField]
+        private CommandList actions2 = new CommandList();
+
+        public ICommandList Actions2
+            => this.actions2;
+
+        [SerializeField]
+        private string actor3;
+
+        public string Actor3
+            => this.actor3;
+
+        [SerializeField]
+        private CommandList actions3 = new CommandList();
+
+        public ICommandList Actions3
+            => this.actions3;
+
+        [SerializeField]
+        private string actor4;
+
+        public string Actor4
+            => this.actor4;
+
+        [SerializeField]
+        private CommandList actions4 = new CommandList();
+
+        public ICommandList Actions4
+            => this.actions4;
+
+        [SerializeField]
+        private int[] highlight;
+
+        public ReadArray<int> Highlight
+            => this.highlight;
+
+        [SerializeField]
+        private CommandList commandsOnStart = new CommandList();
+
+        public ICommandList CommandsOnStart
+            => this.commandsOnStart;
+
+        [SerializeField]
+        private CommandList commandsOnEnd = new CommandList();
+
+        public ICommandList CommandsOnEnd
+            => this.commandsOnEnd;
 
         protected DialogueRow(int row, string id) : base(row)
         {
@@ -63,23 +99,47 @@ namespace VisualNovelData.Data
             this.id = id;
         }
 
-        public DialogueRow(int row, string id, float delay, string actor, string action, int highlight,
-                           IReadOnlyList<Event> eventsOnStart = null, IReadOnlyList<Event> eventsOnEnd = null)
+        public DialogueRow(int row, string id, float delay, string actor1, IReadOnlyList<Command> actions1,
+                           string actor2, IReadOnlyList<Command> actions2, string actor3, IReadOnlyList<Command> actions3,
+                           string actor4, IReadOnlyList<Command> actions4, int[] highlight,
+                           IReadOnlyList<Command> commandsOnStart = null, IReadOnlyList<Command> commandsOnEnd = null)
             : this(row, id)
         {
             this.delay = delay;
-            this.actor = actor;
-            this.action = action;
-            this.highlight = highlight;
+            this.actor1 = actor1;
+            this.actor2 = actor2;
+            this.actor3 = actor3;
+            this.actor4 = actor4;
+            this.highlight = highlight ?? new int[0];
 
-            if (eventsOnStart != null)
+            if (actions1 != null)
             {
-                this.eventsOnStart.AddRange(eventsOnStart);
+                this.actions1.AddRange(actions1);
             }
 
-            if (eventsOnEnd != null)
+            if (actions2 != null)
             {
-                this.eventsOnEnd.AddRange(eventsOnEnd);
+                this.actions1.AddRange(actions2);
+            }
+
+            if (actions3 != null)
+            {
+                this.actions1.AddRange(actions3);
+            }
+
+            if (actions4 != null)
+            {
+                this.actions1.AddRange(actions4);
+            }
+
+            if (commandsOnStart != null)
+            {
+                this.commandsOnStart.AddRange(commandsOnStart);
+            }
+
+            if (commandsOnEnd != null)
+            {
+                this.commandsOnEnd.AddRange(commandsOnEnd);
             }
         }
 
@@ -112,8 +172,10 @@ namespace VisualNovelData.Data
         public EndDialogueRow(int row, string id) : base(row, id)
         { }
 
-        public EndDialogueRow(int row, string id, IReadOnlyList<Event> eventsOnStart = null, IReadOnlyList<Event> eventsOnEnd = null)
-            : base(row, id, 0f, string.Empty, string.Empty, -1, eventsOnStart, eventsOnEnd)
+        public EndDialogueRow(int row, string id, IReadOnlyList<Command> commandsOnStart = null,
+                              IReadOnlyList<Command> commandsOnEnd = null)
+            : base(row, id, 0f, string.Empty, null, string.Empty, null, string.Empty, null, string.Empty, null, null,
+                   commandsOnStart, commandsOnEnd)
         { }
 
         public sealed override void AddChoice(ChoiceRow option) { }

@@ -100,7 +100,7 @@
 .action TextInput,
 .highlight TextInput,
 .go-to TextInput,
-.event TextInput {
+.row TextInput {
     background-image: none;
     padding-left: 0;
 }
@@ -116,7 +116,7 @@
 .choice-container > Label,
 .delay, .actor, .action, .highlight,
 .default-choice,
-.event-trigger-container {
+.table-container {
     margin-left: 15px;
     margin-right: 4px;
 }
@@ -139,7 +139,7 @@
 .content TextInput,
 .default-choice .content,
 .choice .content,
-.event TextInput{
+.row TextInput {
     white-space: normal;
 }
 
@@ -167,27 +167,27 @@
     -unity-font-style: normal;
 }
 
-.trigger-container {
+.column-container {
     flex-direction: row;
 }
 
-.on-trigger {
+.column {
     flex-grow: 1;
     flex-shrink: 1;
     margin: 0 2px 0 2px;
 }
 
-.on-trigger > Label {
+.column > Label {
     align-self: center;
     flex-grow: 1;
     flex-shrink: 1;
 }
 
-.event {
+.row {
     margin: 0;
     padding: 1px 0 1px 0;
 }
 
-.event > TextInput {
+.row > TextInput {
     -unity-text-align: middle-center;
 }

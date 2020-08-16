@@ -13,7 +13,7 @@ namespace VisualNovelData.Importer.Editor
     [ScriptedImporter(1, QuestAsset.Extension)]
     public class VsqImporter : CustomImporter<QuestAsset>
     {
-        private readonly EventParser eventParser = new EventParser();
+        private readonly CommandParser commandParser = new CommandParser();
 
         protected override QuestAsset Create(string assetPath, QuestAsset asset)
         {
@@ -51,7 +51,7 @@ namespace VisualNovelData.Importer.Editor
                 var vsqRow = enumerator.Current.Result;
                 row = enumerator.Current.RowIndex + 1;
 
-                quest = vsqRow.Parse(asset, quest, this.eventParser, row);
+                quest = vsqRow.Parse(asset, quest, this.commandParser, row);
 
                 if (vsqRow.IsError)
                 {

@@ -34,10 +34,10 @@ namespace VisualNovelData.Data
             this.progressType = progressType;
         }
 
-        public void AddStage(int stage, IReadOnlyList<Event> events, int maxConstraint = -1)
+        public void AddStage(int stage, IReadOnlyList<Command> commands, int maxConstraint = -1)
         {
-            if (events == null)
-                throw new ArgumentNullException(nameof(events));
+            if (commands == null)
+                throw new ArgumentNullException(nameof(commands));
 
             var index = this.progress.Count;
 
@@ -49,7 +49,7 @@ namespace VisualNovelData.Data
                 index = i;
             }
 
-            this.progress.Insert(index, new StageRow(stage, events, maxConstraint));
+            this.progress.Insert(index, new StageRow(stage, commands, maxConstraint));
         }
 
         public StageRow GetStage(int stage)

@@ -22,10 +22,10 @@
     color: #82ffdd;
 }
 
-.on-trigger {
+.column {
     background-color: #414141;
 }
 
-.event {
+.row {
     background-color: #e3e3e3;
 }

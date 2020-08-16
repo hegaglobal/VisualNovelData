@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEngine;
 using UnityEditor.Experimental.AssetImporters;
-using TinyCsvParser;
 using System.Text;
 using UnityEditor;
 
@@ -14,7 +13,8 @@ namespace VisualNovelData.Importer.Editor
     [ScriptedImporter(1, NovelAsset.Extension)]
     public class VsnImporter : CustomImporter<NovelAsset>
     {
-        private readonly EventParser eventParser = new EventParser();
+        private readonly CommandParser commandParser = new CommandParser();
+        private readonly IArrayParser<int> intArrayParser = new ArrayParser<int, IntParser>();
 
         protected override NovelAsset Create(string assetPath, NovelAsset asset)
         {
@@ -64,7 +64,7 @@ namespace VisualNovelData.Importer.Editor
                 row = enumerator.Current.RowIndex + 1;
 
                 (conversation, dialogue) = vsnRow.Parse(asset, conversation, dialogue, languages, row,
-                                                        goToList, this.eventParser, logger);
+                                                        goToList, this.commandParser, this.intArrayParser, logger);
 
                 if (vsnRow.IsError)
                 {

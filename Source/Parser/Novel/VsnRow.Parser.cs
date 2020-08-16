@@ -10,9 +10,9 @@ namespace VisualNovelData.Parser
     {
         public override bool IsEmpty
             => !(this.HasConversation  || this.HasDialogue    ||
-                 this.HasActor         || this.HasAction      ||
+                 this.HasActor         || this.HasActions      ||
                  this.Choice.HasValue  || this.HasGoTo        ||
-                 this.HasEventsOnStart || this.HasEventsOnEnd ||
+                 this.HasCommandsOnStart || this.HasCommandsOnEnd ||
                  this.HasContent);
 
         public bool IsConversationStart
@@ -43,16 +43,18 @@ namespace VisualNovelData.Parser
             => !string.IsNullOrEmpty(this.GoTo);
 
         public bool HasActor
-            => !string.IsNullOrEmpty(this.Actor);
+            => !string.IsNullOrEmpty(this.Actor1) || !string.IsNullOrEmpty(this.Actor2) ||
+               !string.IsNullOrEmpty(this.Actor3) || !string.IsNullOrEmpty(this.Actor4);
 
-        public bool HasAction
-            => !string.IsNullOrEmpty(this.Action);
+        public bool HasActions
+            => !string.IsNullOrEmpty(this.Actions1) || !string.IsNullOrEmpty(this.Actions2) ||
+               !string.IsNullOrEmpty(this.Actions3) || !string.IsNullOrEmpty(this.Actions4);
 
-        public bool HasEventsOnStart
-            => !string.IsNullOrEmpty(this.EventsOnStart);
+        public bool HasCommandsOnStart
+            => !string.IsNullOrEmpty(this.CommandsOnStart);
 
-        public bool HasEventsOnEnd
-            => !string.IsNullOrEmpty(this.EventsOnEnd);
+        public bool HasCommandsOnEnd
+            => !string.IsNullOrEmpty(this.CommandsOnEnd);
 
         public bool HasContent
         {
@@ -76,8 +78,10 @@ namespace VisualNovelData.Parser
         public override string ToString()
         {
             this.stringBuilder.Clear();
-            this.stringBuilder.Append($"{this.Conversation} - {this.Dialogue} - {this.Actor} - {this.Action} - ");
-            this.stringBuilder.Append($"{this.Choice} - {this.GoTo} - {this.EventsOnStart} - {this.EventsOnEnd}");
+            this.stringBuilder.Append($"{this.Conversation} - {this.Dialogue} - {this.Delay} - {this.Choice} - {this.GoTo} - ");
+            this.stringBuilder.Append($"{this.Actor1} - {this.Actions1} - {this.Actor2} - {this.Actions2} - ");
+            this.stringBuilder.Append($"{this.Actor3} - {this.Actions3} - {this.Actor4} - {this.Actions4} - ");
+            this.stringBuilder.Append($"{this.CommandsOnStart} - {this.CommandsOnEnd}");
 
             foreach (var content in this.Contents)
             {
@@ -89,7 +93,8 @@ namespace VisualNovelData.Parser
 
         public (ConversationRow, DialogueRow) Parse(INovelData data, ConversationRow conversation,
                                                     DialogueRow dialogue, in Segment<string> languages, int row,
-                                                    List<string> goToList, EventParser eventParser, StringBuilder logger)
+                                                    List<string> goToList, CommandParser commandParser,
+                                                    IArrayParser<int> intArrayParser, StringBuilder logger)
         {
             this.error.Clear();
 
@@ -101,17 +106,17 @@ namespace VisualNovelData.Parser
                 if (this.IsConversationEnd)
                 {
                     if (this.IsEndDialogue)
-                        ParseEndDialogue(conversation, eventParser, row);
+                        ParseEndDialogue(conversation, commandParser, row);
 
                     return (ParseConversationEnd(conversation, data, goToList, logger), dialogue);
                 }
 
                 if (this.IsEndDialogue)
-                    return (conversation, ParseEndDialogue(conversation, eventParser, row));
+                    return (conversation, ParseEndDialogue(conversation, commandParser, row));
 
                 if (this.IsDialogue)
                 {
-                    var newDialogue = ParseDialogue(conversation, dialogue, row, goToList, eventParser, logger);
+                    var newDialogue = ParseDialogue(conversation, dialogue, row, goToList, commandParser, intArrayParser, logger);
 
                     if (this.error.Length <= 0 && newDialogue != null)
                     {
@@ -217,7 +222,7 @@ namespace VisualNovelData.Parser
             goToList.Clear();
         }
 
-        private EndDialogueRow ParseEndDialogue(ConversationRow conversation, EventParser eventParser, int row)
+        private EndDialogueRow ParseEndDialogue(ConversationRow conversation, CommandParser commandParser, int row)
         {
             if (conversation == null)
             {
@@ -225,24 +230,25 @@ namespace VisualNovelData.Parser
                 return null;
             }
 
-            var eventsOnStart = eventParser.Parse(this.EventsOnStart, this.error);
+            var commandsOnStart = commandParser.Parse(this.CommandsOnStart, this.error);
 
             if (this.IsError)
                 return null;
 
-            var eventsOnEnd = eventParser.Parse(this.EventsOnEnd, this.error);
+            var commandsOnEnd = commandParser.Parse(this.CommandsOnEnd, this.error);
 
             if (this.IsError)
                 return null;
 
-            var endDialogue = new EndDialogueRow(row, this.Dialogue, eventsOnStart, eventsOnEnd);
+            var endDialogue = new EndDialogueRow(row, this.Dialogue, commandsOnStart, commandsOnEnd);
             conversation.AddDialogue(endDialogue);
 
             return endDialogue;
         }
 
         private DialogueRow ParseDialogue(ConversationRow conversation, DialogueRow dialogue, int row,
-                                          List<string> goToList, EventParser eventParser, StringBuilder logger)
+                                          List<string> goToList, CommandParser commandParser,
+                                          IArrayParser<int> intArrayParser, StringBuilder logger)
         {
             if (conversation == null)
             {
@@ -281,21 +287,47 @@ namespace VisualNovelData.Parser
                 Debug.LogWarning($"Vsn row {row}: Dialogue id has already existed");
             }
 
-            var eventsOnStart = eventParser.Parse(this.EventsOnStart, this.error);
+            var actions1 = commandParser.Parse(this.Actions1, this.error);
 
             if (this.IsError)
                 return null;
 
-            var eventsOnEnd = eventParser.Parse(this.EventsOnEnd, this.error);
+            var actions2 = commandParser.Parse(this.Actions2, this.error);
+
+            if (this.IsError)
+                return null;
+
+            var actions3 = commandParser.Parse(this.Actions3, this.error);
+
+            if (this.IsError)
+                return null;
+
+            var actions4 = commandParser.Parse(this.Actions4, this.error);
+
+            if (this.IsError)
+                return null;
+
+            var highlight = intArrayParser.Parse(this.Highlight, this.error);
+
+            if (this.IsError)
+                return null;
+
+            var commandsOnStart = commandParser.Parse(this.CommandsOnStart, this.error);
+
+            if (this.IsError)
+                return null;
+
+            var commandsOnEnd = commandParser.Parse(this.CommandsOnEnd, this.error);
 
             if (this.IsError)
                 return null;
 
             var newDialogue = new DialogueRow(row, id, this.Delay ?? 0f,
-                                              this.Actor?.Trim() ?? string.Empty,
-                                              this.Action?.Trim() ?? string.Empty,
-                                              this.Highlight ?? -1,
-                                              eventsOnStart, eventsOnEnd);
+                                              this.Actor1?.Trim() ?? string.Empty, actions1,
+                                              this.Actor2?.Trim() ?? string.Empty, actions2,
+                                              this.Actor3?.Trim() ?? string.Empty, actions3,
+                                              this.Actor4?.Trim() ?? string.Empty, actions4,
+                                              highlight, commandsOnStart, commandsOnEnd);
 
             var newChoice = ParseChoice(newDialogue, row, goToList, logger);
 

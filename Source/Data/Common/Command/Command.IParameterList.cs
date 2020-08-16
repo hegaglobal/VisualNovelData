@@ -2,7 +2,7 @@
 
 namespace VisualNovelData.Data
 {
-    public partial class Event
+    public partial class Command
     {
         public interface IParameterList : IReadOnlyList<string>
         {

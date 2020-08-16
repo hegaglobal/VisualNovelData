@@ -2,7 +2,5 @@
 
 namespace VisualNovelData.Data
 {
-    public interface IEventList : IReadOnlyList<Event>
-    {
-    }
+    public interface ICommandList : IReadOnlyList<Command> { }
 }

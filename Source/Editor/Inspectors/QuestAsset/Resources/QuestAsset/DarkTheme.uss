@@ -20,6 +20,6 @@
     color: #82ffdd;
 }
 
-.event-container {
+.command-container {
     background-color: #e3e3e3;
 }

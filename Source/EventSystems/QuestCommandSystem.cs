@@ -2,35 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VisualNovelData.EventSystems
+namespace VisualNovelData.CommandSystems
 {
     using Data;
 
-    public sealed class QuestEventSystem
+    public sealed class QuestCommandSystem
     {
         public IQuestData QuestData { get; private set; }
 
-        public EventSystem EventSystem { get; private set; }
+        public CommandSystem CommandSystem { get; private set; }
 
-        public QuestEventSystem() { }
+        public QuestCommandSystem() { }
 
-        public QuestEventSystem(EventSystem eventSystem)
-            => Set(eventSystem);
+        public QuestCommandSystem(CommandSystem commandSystem)
+            => Set(commandSystem);
 
-        public QuestEventSystem(IQuestData questData)
+        public QuestCommandSystem(IQuestData questData)
             => Set(questData);
 
-        public QuestEventSystem(IQuestData questData, EventSystem eventSystem)
+        public QuestCommandSystem(IQuestData questData, CommandSystem commandSystem)
         {
             Set(questData);
-            Set(eventSystem);
+            Set(commandSystem);
         }
 
         public void Set(IQuestData questData)
             => this.QuestData = questData ?? throw new ArgumentNullException(nameof(questData));
 
-        public void Set(EventSystem eventSystem)
-            => this.EventSystem = eventSystem ?? throw new ArgumentNullException(nameof(eventSystem));
+        public void Set(CommandSystem commandSystem)
+            => this.CommandSystem = commandSystem ?? throw new ArgumentNullException(nameof(commandSystem));
 
         private bool TryGetQuest(string questId, out QuestRow quest)
         {
@@ -87,22 +87,22 @@ namespace VisualNovelData.EventSystems
                 if (CanSkip(stage, progress))
                     continue;
 
-                Invoke(stage.Events.AsSegment(), progress);
+                Invoke(stage.Commands.AsSegment(), progress);
             }
         }
 
-        private void Invoke(in Segment<Event> events, int progress)
+        private void Invoke(in Segment<Command> commands, int progress)
         {
-            if (events.Count <= 0)
+            if (commands.Count <= 0)
                 return;
 
-            if (this.EventSystem == null)
+            if (this.CommandSystem == null)
             {
-                Debug.LogWarning("Cannot invoke events. No EventSystem is assigned");
+                Debug.LogWarning($"Cannot invoke commands. No {nameof(this.CommandSystem)} is assigned");
                 return;
             }
 
-            this.EventSystem.Invoke(events, progress);
+            this.CommandSystem.Invoke(commands, progress);
         }
 
         private static bool CanSkip(StageRow stage, int progress)

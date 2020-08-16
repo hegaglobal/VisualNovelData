@@ -24,18 +24,18 @@ namespace VisualNovelData.Data
             => this.maxConstraint;
 
         [SerializeField]
-        private EventList events = new EventList();
+        private CommandList commands = new CommandList();
 
-        public IEventList Events
-            => this.events;
+        public ICommandList Commands
+            => this.commands;
 
-        public StageRow(int stage, IReadOnlyList<Event> events, int maxConstraint = -1)
+        public StageRow(int stage, IReadOnlyList<Command> commands, int maxConstraint = -1)
         {
             this.index = stage;
 
-            if (events != null)
+            if (commands != null)
             {
-                this.events.AddRange(events);
+                this.commands.AddRange(commands);
             }
 
             this.maxConstraint = maxConstraint;

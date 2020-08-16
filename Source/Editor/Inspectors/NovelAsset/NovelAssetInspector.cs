@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
-using System.Collections.Generic;
 
 namespace VisualNovelData.Data.Editor
 {
@@ -76,22 +78,6 @@ namespace VisualNovelData.Data.Editor
             var idElem = new IdElement { value = dialogue.Id };
             dialogueElem.Header.Add(idElem);
 
-
-            if (!dialogue.IsEnd())
-            {
-                var delayElem = new DelayElement("Delay") { value = dialogue.Delay.ToString() };
-                dialogueElem.Add(delayElem);
-
-                var actorElem = new ActorElement("Actor") { value = dialogue.Actor };
-                dialogueElem.Add(actorElem);
-
-                var actionElem = new ActionElement("Action") { value = dialogue.Action };
-                dialogueElem.Add(actionElem);
-
-                var highlightElem = new HighlightElement("Highlight") { value = dialogue.Highlight.ToString() };
-                dialogueElem.Add(highlightElem);
-            }
-
             var defaultChoiceData = dialogue.GetChoice(0);
 
             if (defaultChoiceData != null)
@@ -123,10 +109,29 @@ namespace VisualNovelData.Data.Editor
                 dialogueElem.Add(choiceContainer);
             }
 
-            if (dialogue.EventsOnStart.Count > 0 ||
-                dialogue.EventsOnEnd.Count > 0)
+            if (!dialogue.IsEnd())
             {
-                CreateEventsGUI(dialogueElem, dialogue.EventsOnStart, dialogue.EventsOnEnd);
+                var sb = new StringBuilder();
+                var delayElem = new DelayElement("Delay") { value = dialogue.Delay.ToString() };
+                dialogueElem.Add(delayElem);
+
+                CreateCharacterTableGUI(dialogueElem, out var columnContainerElem);
+
+                CreateCharacterList<ActorColumnElement>(columnContainerElem, "Actor",
+                                                        dialogue.Actor1, dialogue.Actor2, dialogue.Actor3, dialogue.Actor4);
+
+                CreateCharacterList<ActionColumnElement>(columnContainerElem, "Actions",
+                                                         dialogue.Actions1.BuildString(sb), dialogue.Actions2.BuildString(sb),
+                                                         dialogue.Actions3.BuildString(sb), dialogue.Actions4.BuildString(sb));
+
+                var highlightElem = new HighlightElement("Highlight") { value = dialogue.Highlight.BuildString(sb) };
+                dialogueElem.Add(highlightElem);
+            }
+
+            if (dialogue.CommandsOnStart.Count > 0 ||
+                dialogue.CommandsOnEnd.Count > 0)
+            {
+                CreateCommandTableGUI(dialogueElem, dialogue.CommandsOnStart, dialogue.CommandsOnEnd);
             }
 
             root.Add(dialogueElem);
@@ -195,43 +200,79 @@ namespace VisualNovelData.Data.Editor
             return goToElem;
         }
 
-        private EventTriggerContainer CreateEventsGUI(VisualElement root, IEventList onStart, IEventList onEnd)
+        private TableContainer CreateCharacterTableGUI(VisualElement root, out ColumnContainer columnContainer)
         {
-            var eventTriggerContainer = new EventTriggerContainer();
-            root.Add(eventTriggerContainer);
+            var tableContainer = new TableContainer();
+            root.Add(tableContainer);
 
-            eventTriggerContainer.Add(new Label("Events"));
+            tableContainer.Add(new Label("Characters"));
 
-            var triggerContainer = new TriggerContainer();
-            eventTriggerContainer.Add(triggerContainer);
+            columnContainer = new ColumnContainer();
+            tableContainer.Add(columnContainer);
 
-            CreateOnEventList<OnStartElement>(triggerContainer, "On Start", onStart);
-            CreateOnEventList<OnEndElement>(triggerContainer, "On End", onEnd);
-
-            return eventTriggerContainer;
+            return tableContainer;
         }
 
-        private T CreateOnEventList<T>(VisualElement root, string label, IReadOnlyList<Event> eventList)
-            where T : TriggerElement, new()
+        private T CreateCharacterList<T>(VisualElement root, string label, params string[] characters)
+            where T : ColumnElement, new()
         {
-            var triggerElem = new T();
-            root.Add(triggerElem);
+            var columnElem = new T();
+            root.Add(columnElem);
 
-            triggerElem.Add(new Label(label));
+            columnElem.Add(new Label(label));
 
-            if (eventList.Count > 0)
+            if (characters.Length > 0)
             {
-                var eventContainer = new EventContainer();
-                triggerElem.Add(eventContainer);
+                var rowContainer = new RowContainer();
+                columnElem.Add(rowContainer);
 
-                for (var i = 0; i < eventList.Count; i++)
+                for (var i = 0; i < characters.Length; i++)
                 {
-                    var eventElem = new EventElement { value = eventList[i].Id };
-                    triggerElem.Add(eventElem);
+                    var rowElem = new RowElement { value = characters[i] };
+                    columnElem.Add(rowElem);
                 }
             }
 
-            return triggerElem;
+            return columnElem;
+        }
+
+        private TableContainer CreateCommandTableGUI(VisualElement root, ICommandList onStart, ICommandList onEnd)
+        {
+            var tableContainer = new TableContainer();
+            root.Add(tableContainer);
+
+            tableContainer.Add(new Label("Commands"));
+
+            var columnContainer = new ColumnContainer();
+            tableContainer.Add(columnContainer);
+
+            CreateCommandList<OnStartColumnElement>(columnContainer, "On Start", onStart);
+            CreateCommandList<OnEndColumnElement>(columnContainer, "On End", onEnd);
+
+            return tableContainer;
+        }
+
+        private T CreateCommandList<T>(VisualElement root, string label, IReadOnlyList<Command> commands)
+            where T : ColumnElement, new()
+        {
+            var columnElem = new T();
+            root.Add(columnElem);
+
+            columnElem.Add(new Label(label));
+
+            if (commands.Count > 0)
+            {
+                var rowContainer = new RowContainer();
+                columnElem.Add(rowContainer);
+
+                for (var i = 0; i < commands.Count; i++)
+                {
+                    var rowElem = new RowElement { value = commands[i].Id };
+                    columnElem.Add(rowElem);
+                }
+            }
+
+            return columnElem;
         }
 
         private void OnChangeLanguage(ChangeEvent<string> evt)
@@ -253,6 +294,45 @@ namespace VisualNovelData.Data.Editor
                 var id = (int)content.userData;
                 content.value = conversation?.GetContent(id)?.GetLocalization(evt.newValue) ?? string.Empty;
             }
+        }
+    }
+
+    internal static class CollectionExtensions
+    {
+        public static string BuildString(this ICommandList self, StringBuilder sb)
+        {
+            sb.Clear();
+
+            for (var i = 0; i < self.Count; i++)
+            {
+                if (self[i] == null)
+                    continue;
+
+                if (i > 0)
+                    sb.Append(" | ");
+
+                sb.Append($"{self[i].Id}");
+            }
+
+            return sb.ToString();
+        }
+
+        public static string BuildString<T>(in this ReadArray<T> self, StringBuilder sb)
+        {
+            sb.Clear();
+
+            for (var i = 0; i < self.Length; i++)
+            {
+                if (self[i] == null)
+                    continue;
+
+                if (i > 0)
+                    sb.Append(", ");
+
+                sb.Append($"{self[i]}");
+            }
+
+            return sb.ToString();
         }
     }
 }

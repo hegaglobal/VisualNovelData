@@ -10,7 +10,7 @@ namespace VisualNovelData.Parser
 
         public int? MaxConstraint { get; private set; }
 
-        public string Events { get; private set; }
+        public string Commands { get; private set; }
 
         public class Mapping : CsvMapping<VsqRow>
         {
@@ -21,7 +21,7 @@ namespace VisualNovelData.Parser
                 MapProperty(++col, x => x.Quest, (x, v) => x.Quest = v);
                 MapProperty(++col, x => x.Stage, (x, v) => x.Stage = v);
                 MapProperty(++col, x => x.MaxConstraint, (x, v) => x.MaxConstraint = v);
-                MapProperty(++col, x => x.Events, (x, v) => x.Events = v);
+                MapProperty(++col, x => x.Commands, (x, v) => x.Commands = v);
             }
         }
     }

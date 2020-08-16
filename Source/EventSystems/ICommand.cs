@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace VisualNovelData.EventSystems
+namespace VisualNovelData.CommandSystems
 {
-    public interface IEvent
+    public interface ICommand
     {
         void Invoke(in Segment<object> parameters);
     }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using VisualNovelData.Data;
 
-namespace VisualNovelData.EventSystems
+namespace VisualNovelData.CommandSystems
 {
-    public abstract class DialogueEvent : BaseEvent
+    public abstract class DialogueCommand : BaseCommand
     {
         public sealed override void Invoke(in Segment<object> parameters)
         {

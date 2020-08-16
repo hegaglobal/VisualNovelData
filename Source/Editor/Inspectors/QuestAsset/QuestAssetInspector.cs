@@ -64,12 +64,12 @@ namespace VisualNovelData.Data.Editor
                     stageContainer.Add(new StageElement { value = $"<{stage.MaxConstraint}>" });
                 }
 
-                var eventContainer = new EventContainer();
-                stageContainer.Add(eventContainer);
+                var commandContainer = new CommandContainer();
+                stageContainer.Add(commandContainer);
 
-                foreach (var e in stage.Events)
+                foreach (var command in stage.Commands)
                 {
-                    eventContainer.Add(new EventElement { value = e.Id });
+                    commandContainer.Add(new CommandElement { value = command.Id });
                 }
             }
 

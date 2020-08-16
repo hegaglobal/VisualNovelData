@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VisualNovelData.EventSystems
+namespace VisualNovelData.CommandSystems
 {
-    public abstract class BaseEvent : IEvent
+    public abstract class BaseCommand : ICommand
     {
         protected Converter converter { get; } = new Converter();
 

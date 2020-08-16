@@ -102,74 +102,69 @@ namespace VisualNovelData.Data.Editor
             }
         }
 
-        private class EventTriggerContainer : Container
+        private class TableContainer : Container
         {
-            public EventTriggerContainer() : base("event-trigger")
+            public TableContainer() : base("table")
             {
             }
         }
 
-        private class TriggerContainer : Container
+        private class ColumnContainer : Container
         {
-            public TriggerContainer() : base("trigger")
+            public ColumnContainer() : base("column")
             {
             }
         }
 
-        private abstract class TriggerElement : VisualElement
+        private class ColumnElement : VisualElement
         {
-            public TriggerElement()
+            public ColumnElement(string customClass)
             {
-                AddToClassList("on-trigger");
+                AddToClassList("column");
+                AddToClassList(customClass);
             }
         }
 
-        private class OnStartElement : TriggerElement
+        private class RowContainer : Container
         {
-            public OnStartElement()
-            {
-                AddToClassList("on-start");
-            }
-        }
-
-        private class OnEndElement : TriggerElement
-        {
-            public OnEndElement()
-            {
-                AddToClassList("on-end");
-            }
-        }
-
-        private class EventContainer : Container
-        {
-            public EventContainer() : base("event")
+            public RowContainer() : base("row")
             {
             }
         }
 
-        private class EventElement : ReadOnlyTextField
+        private class RowElement : ReadOnlyTextField
         {
-            public EventElement() : base(string.Empty)
+            public RowElement() : base(string.Empty)
             {
-                AddToClassList("event");
+                AddToClassList("row");
             }
         }
 
-        private class EventsOnStartElement : ReadOnlyTextField
+        private class ActorColumnElement : ColumnElement
         {
-            public EventsOnStartElement(string label) : base(label)
+            public ActorColumnElement() : base("actor")
             {
-                AddToClassList("events-on-start");
-                this.multiline = true;
             }
         }
 
-        private class EventsOnEndElement : ReadOnlyTextField
+        private class ActionColumnElement : ColumnElement
         {
-            public EventsOnEndElement(string label) : base(label)
+            public ActionColumnElement() : base("action")
             {
-                AddToClassList("events-on-end");
-                this.multiline = true;
+            }
+        }
+
+        private class OnStartColumnElement : ColumnElement
+        {
+            public OnStartColumnElement() : base("commands-on-start")
+            {
+            }
+        }
+
+        private class OnEndColumnElement : ColumnElement
+        {
+            public OnEndColumnElement() : base("commands-on-end")
+            {
             }
         }
     }

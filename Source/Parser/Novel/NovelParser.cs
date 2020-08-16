@@ -10,7 +10,8 @@ namespace VisualNovelData.Parser
     public sealed class NovelParser : CsvParser, ICsvParser<NovelData>
     {
         private readonly StringBuilder logger;
-        private readonly EventParser eventParser;
+        private readonly CommandParser commandParser;
+        private readonly IArrayParser<int> intArrayParser;
 
         private Parser<VsnRow> parser;
         private Segment<string> languages;
@@ -18,7 +19,8 @@ namespace VisualNovelData.Parser
         public NovelParser()
         {
             this.logger = new StringBuilder();
-            this.eventParser = new EventParser();
+            this.commandParser = new CommandParser();
+            this.intArrayParser = new ArrayParser<int, IntParser>();
         }
 
         public NovelParser(in Segment<string> languages) : this()
@@ -75,7 +77,7 @@ namespace VisualNovelData.Parser
                 row = enumerator.Current.RowIndex + 1;
 
                 (conversation, dialogue) = vsnRow.Parse(data, conversation, dialogue, this.languages, row,
-                                                        goToList, this.eventParser, this.logger);
+                                                        goToList, this.commandParser, this.intArrayParser, this.logger);
 
                 if (vsnRow.IsError)
                 {

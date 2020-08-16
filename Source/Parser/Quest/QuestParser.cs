@@ -9,11 +9,11 @@ namespace VisualNovelData.Parser
     public sealed class QuestParser : CsvParser, ICsvParser<QuestData>
     {
         private readonly Parser<VsqRow> parser;
-        private readonly EventParser eventParser;
+        private readonly CommandParser commandParser;
 
         public QuestParser()
         {
-            this.eventParser = new EventParser();
+            this.commandParser = new CommandParser();
 
             var mapping = new VsqRow.Mapping();
             this.parser = Create<VsqRow, VsqRow.Mapping>(mapping);
@@ -59,7 +59,7 @@ namespace VisualNovelData.Parser
                 var vsqRow = enumerator.Current.Result;
                 row = enumerator.Current.RowIndex + 1;
 
-                quest = vsqRow.Parse(data, quest, this.eventParser, row);
+                quest = vsqRow.Parse(data, quest, this.commandParser, row);
 
                 if (vsqRow.IsError)
                 {

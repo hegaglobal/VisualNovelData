@@ -10,15 +10,15 @@ namespace VisualNovelData.Parser
         private static readonly Regex _digitsRegex = new Regex(@"\d+", RegexOptions.Compiled);
 
         public override bool IsEmpty
-            => !(this.HasQuest || this.HasStage || this.HasEvents);
+            => !(this.HasQuest || this.HasStage || this.HasCommands);
 
         public bool IsQuestStart
             => this.HasQuest && !this.Quest.StartsWith('[') && !this.Quest.EndsWith(']') &&
-               !(this.HasStage || this.HasEvents);
+               !(this.HasStage || this.HasCommands);
 
         public bool IsQuestEnd
             => this.HasQuest && this.Quest.StartsWith('[') && this.Quest.EndsWith(']') &&
-               !(this.HasStage || this.HasEvents);
+               !(this.HasStage || this.HasCommands);
 
         public bool HasQuest
             => !string.IsNullOrEmpty(this.Quest);
@@ -26,18 +26,18 @@ namespace VisualNovelData.Parser
         public bool HasStage
             => !string.IsNullOrEmpty(this.Stage) && _digitsRegex.IsMatch(this.Stage);
 
-        public bool HasEvents
-            => !string.IsNullOrEmpty(this.Events);
+        public bool HasCommands
+            => !string.IsNullOrEmpty(this.Commands);
 
         public override string ToString()
         {
             this.stringBuilder.Clear();
-            this.stringBuilder.Append($"{this.Quest} - {this.Stage} - {this.Events}");
+            this.stringBuilder.Append($"{this.Quest} - {this.Stage} - {this.Commands}");
 
             return this.stringBuilder.ToString();
         }
 
-        public QuestRow Parse(IQuestData data, QuestRow quest, EventParser eventParser, int row)
+        public QuestRow Parse(IQuestData data, QuestRow quest, CommandParser commandParser, int row)
         {
             this.error.Clear();
 
@@ -50,7 +50,7 @@ namespace VisualNovelData.Parser
                     return ParseQuestEnd(quest, data);
 
                 if (this.HasStage)
-                    ParseStage(quest, eventParser);
+                    ParseStage(quest, commandParser);
             }
 
             return quest;
@@ -116,7 +116,7 @@ namespace VisualNovelData.Parser
             return null;
         }
 
-        private void ParseStage(QuestRow quest, EventParser eventParser)
+        private void ParseStage(QuestRow quest, CommandParser commandParser)
         {
             var stage = 0;
 
@@ -140,12 +140,12 @@ namespace VisualNovelData.Parser
             }
 
             var maxConstraint = this.MaxConstraint ?? -1;
-            var events = eventParser.Parse(this.Events, this.error);
+            var command = commandParser.Parse(this.Commands, this.error);
 
             if (this.IsError)
                 return;
 
-            quest.AddStage(stage, events, maxConstraint);
+            quest.AddStage(stage, command, maxConstraint);
         }
     }
 }

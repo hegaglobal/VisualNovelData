@@ -5,7 +5,7 @@ using UnityEngine;
 namespace VisualNovelData.Data
 {
     [Serializable]
-    public sealed partial class Event
+    public sealed partial class Command
     {
         [SerializeField]
         private string id = string.Empty;
@@ -48,12 +48,12 @@ namespace VisualNovelData.Data
             }
         }
 
-        public Event(string id, string type, int maxConstraint = -1, params string[] parameters)
+        public Command(string id, string type, int maxConstraint = -1, params string[] parameters)
         {
             Initialize(id, type, maxConstraint, parameters);
         }
 
-        public Event(string id, string type, int maxConstraint = -1, in Segment<string> parameters = default)
+        public Command(string id, string type, int maxConstraint = -1, in Segment<string> parameters = default)
         {
             Initialize(id, type, maxConstraint, parameters);
         }

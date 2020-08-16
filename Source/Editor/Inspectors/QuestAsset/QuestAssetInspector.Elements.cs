@@ -41,9 +41,9 @@ namespace VisualNovelData.Data.Editor
             }
         }
 
-        private class EventContainer : Container
+        private class CommandContainer : Container
         {
-            public EventContainer() : base("event")
+            public CommandContainer() : base("command")
             {
             }
         }
@@ -56,11 +56,11 @@ namespace VisualNovelData.Data.Editor
             }
         }
 
-        private class EventElement : ReadOnlyTextField
+        private class CommandElement : ReadOnlyTextField
         {
-            public EventElement() : base(string.Empty)
+            public CommandElement() : base(string.Empty)
             {
-                AddToClassList("event");
+                AddToClassList("command");
             }
         }
     }
