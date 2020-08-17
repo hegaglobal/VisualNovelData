@@ -6,32 +6,32 @@ namespace VisualNovelData.Parser
 {
     using Data;
 
-    public sealed class QuestParser : CsvParser, ICsvParser<QuestData>
+    public sealed class EventParser : CsvParser, ICsvParser<EventData>
     {
-        private readonly Parser<VsqRow> parser;
+        private readonly Parser<VseRow> parser;
         private readonly CommandParser commandParser;
 
-        public QuestParser()
+        public EventParser()
         {
             this.commandParser = new CommandParser();
 
-            var mapping = new VsqRow.Mapping();
-            this.parser = Create<VsqRow, VsqRow.Mapping>(mapping);
+            var mapping = new VseRow.Mapping();
+            this.parser = Create<VseRow, VseRow.Mapping>(mapping);
         }
 
         public void Initialize(in Segment<string> languages)
         {
         }
 
-        public QuestData Parse(string csvData)
+        public EventData Parse(string csvData)
         {
-            var data = new QuestData();
+            var data = new EventData();
             Parse(csvData, data);
 
             return data;
         }
 
-        public void Parse(string csvData, QuestData data)
+        public void Parse(string csvData, EventData data)
         {
             if (csvData == null)
                 throw new ArgumentNullException(nameof(csvData));
@@ -46,7 +46,7 @@ namespace VisualNovelData.Parser
             var error = string.Empty;
             var enumerator = this.parser.Parse(csvData).GetEnumerator();
 
-            QuestRow quest = null;
+            EventRow @event = null;
 
             while (enumerator.MoveNext())
             {
@@ -56,21 +56,21 @@ namespace VisualNovelData.Parser
                     break;
                 }
 
-                var vsqRow = enumerator.Current.Result;
+                var vseRow = enumerator.Current.Result;
                 row = enumerator.Current.RowIndex + 1;
 
-                quest = vsqRow.Parse(data, quest, this.commandParser, row);
+                @event = vseRow.Parse(data, @event, this.commandParser, row);
 
-                if (vsqRow.IsError)
+                if (vseRow.IsError)
                 {
-                    error = vsqRow.Error;
+                    error = vseRow.Error;
                     break;
                 }
             }
 
             if (!string.IsNullOrEmpty(error))
             {
-                Debug.LogError($"Vsq row {row}: {error}");
+                Debug.LogError($"Vse row {row}: {error}");
             }
         }
     }

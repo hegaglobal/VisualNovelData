@@ -1,14 +1,14 @@
-﻿.quest-folder {
+﻿.event-folder {
     background-color: #dfdfdf;
     color: #000000;
     border-color: #b2b2b2;
 }
 
-.quest-header {
+.event-header {
     border-color: #b2b2b2;
 }
 
-.quest-content {
+.event-content {
     background-color: #d2d2d2;
 }
 

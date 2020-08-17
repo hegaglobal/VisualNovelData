@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using UnityEngine;
 using UnityEditor.Experimental.AssetImporters;
-using TinyCsvParser;
-using System.Text;
 using UnityEditor;
 
 namespace VisualNovelData.Importer.Editor
@@ -10,12 +8,12 @@ namespace VisualNovelData.Importer.Editor
     using Data;
     using Parser;
 
-    [ScriptedImporter(1, QuestAsset.Extension)]
-    public class VsqImporter : CustomImporter<QuestAsset>
+    [ScriptedImporter(1, EventAsset.Extension)]
+    public class VseImporter : CustomImporter<EventAsset>
     {
         private readonly CommandParser commandParser = new CommandParser();
 
-        protected override QuestAsset Create(string assetPath, QuestAsset asset)
+        protected override EventAsset Create(string assetPath, EventAsset asset)
         {
             asset.Clear();
 
@@ -26,19 +24,19 @@ namespace VisualNovelData.Importer.Editor
             return asset;
         }
 
-        private Parser<VsqRow> CreateParser()
+        private Parser<VseRow> CreateParser()
         {
-            var mapping = new VsqRow.Mapping();
-            return CsvParser.Create<VsqRow, VsqRow.Mapping>(mapping);
+            var mapping = new VseRow.Mapping();
+            return CsvParser.Create<VseRow, VseRow.Mapping>(mapping);
         }
 
-        private QuestAsset Parse(Parser<VsqRow> parser, string csvData, QuestAsset asset)
+        private EventAsset Parse(Parser<VseRow> parser, string csvData, EventAsset asset)
         {
             var enumerator = parser.Parse(csvData).GetEnumerator();
             var row = 0;
             var error = string.Empty;
 
-            QuestRow quest = null;
+            EventRow @event = null;
 
             while (enumerator.MoveNext())
             {
@@ -48,21 +46,21 @@ namespace VisualNovelData.Importer.Editor
                     break;
                 }
 
-                var vsqRow = enumerator.Current.Result;
+                var vseRow = enumerator.Current.Result;
                 row = enumerator.Current.RowIndex + 1;
 
-                quest = vsqRow.Parse(asset, quest, this.commandParser, row);
+                @event = vseRow.Parse(asset, @event, this.commandParser, row);
 
-                if (vsqRow.IsError)
+                if (vseRow.IsError)
                 {
-                    error = vsqRow.Error;
+                    error = vseRow.Error;
                     break;
                 }
             }
 
             if (!string.IsNullOrEmpty(error))
             {
-                Debug.LogError($"Vsq row {row}: {error}");
+                Debug.LogError($"Vse row {row}: {error}");
                 return null;
             }
 
@@ -70,8 +68,8 @@ namespace VisualNovelData.Importer.Editor
         }
     }
 
-    [CustomEditor(typeof(VsqImporter))]
-    public class VsqImporterEditor : ScriptedImporterEditor
+    [CustomEditor(typeof(VseImporter))]
+    public class VseImporterEditor : ScriptedImporterEditor
     {
         public override void OnInspectorGUI()
         {

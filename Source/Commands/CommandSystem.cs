@@ -150,50 +150,50 @@ namespace VisualNovelData.Commands
             return false;
         }
 
-        public void Invoke(Command command, int progress)
+        public void Invoke(Command command, int stage)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            if (CanSkip(command, progress))
+            if (CanSkip(command, stage))
                 return;
 
             Invoke(command.Type, command.ObjectParameters);
         }
 
-        public void Invoke<T>(Command command, int progress) where T : ICommand
+        public void Invoke<T>(Command command, int stage) where T : ICommand
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            if (CanSkip(command, progress))
+            if (CanSkip(command, stage))
                 return;
 
             Invoke<T>(command.Type, command.ObjectParameters);
         }
 
-        public void Invoke(in Segment<Command> commands, int progress)
+        public void Invoke(in Segment<Command> commands, int stage)
         {
             if (commands.Count <= 0)
                 return;
 
             foreach (var command in commands)
             {
-                if (CanSkip(command, progress))
+                if (CanSkip(command, stage))
                     continue;
 
                 Invoke(command.Type, command.ObjectParameters);
             }
         }
 
-        public void Invoke<T>(in Segment<Command> commands, int progress) where T : ICommand
+        public void Invoke<T>(in Segment<Command> commands, int stage) where T : ICommand
         {
             if (commands.Count <= 0)
                 return;
 
             foreach (var command in commands)
             {
-                if (CanSkip(command, progress))
+                if (CanSkip(command, stage))
                     continue;
 
                 Invoke<T>(command.Type, command.ObjectParameters);
@@ -237,8 +237,8 @@ namespace VisualNovelData.Commands
                 e.Invoke(parameters);
         }
 
-        private static bool CanSkip(Command command, int progress)
+        private static bool CanSkip(Command command, int stage)
             => command == null ||
-               (command.MaxConstraint >= 0 && progress > command.MaxConstraint);
+               (command.MaxConstraint >= 0 && stage > command.MaxConstraint);
     }
 }

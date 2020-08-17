@@ -2,7 +2,7 @@
 
 namespace VisualNovelData.Data
 {
-    public interface IQuestDictionary : IReadOnlyDictionary<string, QuestRow>
+    public interface IStageList : IReadOnlyList<StageRow>
     {
     }
 }

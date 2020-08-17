@@ -1,35 +1,33 @@
-﻿using UnityEngine.UIElements;
-
-namespace VisualNovelData.Data.Editor
+﻿namespace VisualNovelData.Data.Editor
 {
-    public partial class QuestAssetInspector
+    public partial class EventAssetInspector
     {
-        private class QuestAssetElement : Folder
+        private class EventAssetElement : Folder
         {
-            public QuestAssetElement() : base("quest-asset")
+            public EventAssetElement() : base("event-asset")
             {
             }
         }
 
-        private class QuestElement : Folder
+        private class EventElement : Folder
         {
-            public QuestElement() : base("quest")
+            public EventElement() : base("event")
             {
                 this.value = false;
             }
         }
 
-        private class ProgressTypeElement : ReadOnlyTextField
+        private class InvokeTypeElement : ReadOnlyTextField
         {
-            public ProgressTypeElement() : base(string.Empty)
+            public InvokeTypeElement() : base(string.Empty)
             {
-                AddToClassList("progress-type");
+                AddToClassList("invoke-type");
             }
         }
 
-        private class ProgressContainer : Container
+        private class StagesContainer : Container
         {
-            public ProgressContainer() : base("progress")
+            public StagesContainer() : base("stages")
             {
             }
         }

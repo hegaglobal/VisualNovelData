@@ -4,15 +4,15 @@ using UnityEngine.UIElements;
 
 namespace VisualNovelData.Data.Editor
 {
-    [CustomEditor(typeof(QuestAsset), true)]
-    public partial class QuestAssetInspector : UnityEditor.Editor
+    [CustomEditor(typeof(EventAsset), true)]
+    public partial class EventAssetInspector : UnityEditor.Editor
     {
         protected VisualElement root;
-        protected QuestAsset asset;
+        protected EventAsset asset;
 
         private void OnEnable()
         {
-            this.asset = this.target as QuestAsset;
+            this.asset = this.target as EventAsset;
         }
 
         public override VisualElement CreateInspectorGUI()
@@ -23,39 +23,39 @@ namespace VisualNovelData.Data.Editor
             return this.root;
         }
 
-        private QuestAssetElement CreateDataGUI(VisualElement root, QuestAsset asset)
+        private EventAssetElement CreateDataGUI(VisualElement root, EventAsset asset)
         {
-            var assetElem = new QuestAssetElement {
-                text = $"Quest ({asset.Quests.Count})",
+            var assetElem = new EventAssetElement {
+                text = $"Event ({asset.Events.Count})",
                 value = false,
             };
 
             var theme = EditorGUIUtility.isProSkin ? "Dark" : "Light";
 
-            assetElem.styleSheets.Add(Resources.Load<StyleSheet>($"{nameof(QuestAsset)}/Layout"));
-            assetElem.styleSheets.Add(Resources.Load<StyleSheet>($"{nameof(QuestAsset)}/{theme}Theme"));
+            assetElem.styleSheets.Add(Resources.Load<StyleSheet>($"{nameof(EventAsset)}/Layout"));
+            assetElem.styleSheets.Add(Resources.Load<StyleSheet>($"{nameof(EventAsset)}/{theme}Theme"));
 
-            foreach (var kv in asset.Quests)
+            foreach (var kv in asset.Events)
             {
-                CreateQuestGUI(assetElem, kv.Value);
+                CreateEventGUI(assetElem, kv.Value);
             }
 
             root.Add(assetElem);
             return assetElem;
         }
 
-        private QuestElement CreateQuestGUI(VisualElement root, QuestRow quest)
+        private EventElement CreateEventGUI(VisualElement root, EventRow @event)
         {
-            var questElem = new QuestElement { text = quest.Id };
+            var eventElem = new EventElement { text = @event.Id };
 
-            var progressContainer = new ProgressContainer();
-            questElem.Content.Add(new ProgressTypeElement { value = quest.ProgressType.ToKeywordString() });
-            questElem.Content.Add(progressContainer);
+            var stagesContainer = new StagesContainer();
+            eventElem.Content.Add(new InvokeTypeElement { value = @event.InvokeType.ToKeyword() });
+            eventElem.Content.Add(stagesContainer);
 
-            foreach (var stage in quest.Progress)
+            foreach (var stage in @event.Stages)
             {
                 var stageContainer = new StageContainer();
-                progressContainer.Add(stageContainer);
+                stagesContainer.Add(stageContainer);
 
                 stageContainer.Add(new StageElement { value = $"{stage.Index}" });
 
@@ -73,8 +73,8 @@ namespace VisualNovelData.Data.Editor
                 }
             }
 
-            root.Add(questElem);
-            return questElem;
+            root.Add(eventElem);
+            return eventElem;
         }
     }
 }

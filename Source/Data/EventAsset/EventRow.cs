@@ -5,7 +5,7 @@ using UnityEngine;
 namespace VisualNovelData.Data
 {
     [Serializable]
-    public class QuestRow : DataRow
+    public class EventRow : DataRow
     {
         [SerializeField]
         private string id = string.Empty;
@@ -14,24 +14,24 @@ namespace VisualNovelData.Data
             => this.id;
 
         [SerializeField]
-        private QuestProgressType progressType = QuestProgressType.All;
+        private EventInvokeType invokeType = EventInvokeType.All;
 
-        public QuestProgressType ProgressType
-            => this.progressType;
+        public EventInvokeType InvokeType
+            => this.invokeType;
 
         [SerializeField]
-        private QuestProgress progress = new QuestProgress();
+        private StageList stages = new StageList();
 
-        public IQuestProgress Progress
-            => this.progress;
+        public IStageList Stages
+            => this.stages;
 
-        public QuestRow(int row, string id, QuestProgressType progressType) : base(row)
+        public EventRow(int row, string id, EventInvokeType invokeType) : base(row)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
 
             this.id = id;
-            this.progressType = progressType;
+            this.invokeType = invokeType;
         }
 
         public void AddStage(int stage, IReadOnlyList<Command> commands, int maxConstraint = -1)
@@ -39,42 +39,42 @@ namespace VisualNovelData.Data
             if (commands == null)
                 throw new ArgumentNullException(nameof(commands));
 
-            var index = this.progress.Count;
+            var index = this.stages.Count;
 
-            for (var i = this.progress.Count - 1; i >= 0; i--)
+            for (var i = this.stages.Count - 1; i >= 0; i--)
             {
-                if (this.progress[i].Index < stage)
+                if (this.stages[i].Index < stage)
                     break;
 
                 index = i;
             }
 
-            this.progress.Insert(index, new StageRow(stage, commands, maxConstraint));
+            this.stages.Insert(index, new StageRow(stage, commands, maxConstraint));
         }
 
         public StageRow GetStage(int stage)
         {
-            for (var i = 0; i < this.progress.Count; i++)
+            for (var i = 0; i < this.stages.Count; i++)
             {
-                if (this.progress[i].Index == stage)
-                    return this.progress[i];
+                if (this.stages[i].Index == stage)
+                    return this.stages[i];
             }
 
             return null;
         }
 
         public Segment<StageRow> GetEmptyStages()
-            => this.progress.Slice(0, 0);
+            => this.stages.Slice(0, 0);
 
         public Segment<StageRow> GetStages()
-            => this.progress;
+            => this.stages;
 
         public Segment<StageRow> GetStages(int fromIndex, int toIndex)
         {
-            if (fromIndex < 0 || fromIndex >= this.progress.Count)
+            if (fromIndex < 0 || fromIndex >= this.stages.Count)
                 return GetEmptyStages();
 
-            if (toIndex < 0 || toIndex >= this.progress.Count)
+            if (toIndex < 0 || toIndex >= this.stages.Count)
                 return GetEmptyStages();
 
             if (fromIndex > toIndex)
@@ -86,22 +86,22 @@ namespace VisualNovelData.Data
             if (fromIndex == toIndex)
                 return GetEmptyStages();
 
-            return this.progress.Slice(fromIndex, toIndex - fromIndex + 1);
+            return this.stages.Slice(fromIndex, toIndex - fromIndex + 1);
         }
 
-        public int GetCurrentStageIndex(int progress)
+        public int GetCurrentStageIndex(int stage)
         {
             var index = -1;
 
-            for (var i = 0; i < this.progress.Count; i++)
+            for (var i = 0; i < this.stages.Count; i++)
             {
-                if (this.progress[i].Index == progress)
+                if (this.stages[i].Index == stage)
                 {
                     index = i;
                     break;
                 }
 
-                if (this.progress[i].Index > progress)
+                if (this.stages[i].Index > stage)
                     break;
 
                 index = i;
@@ -110,42 +110,42 @@ namespace VisualNovelData.Data
             return index;
         }
 
-        public StageRow GetCurrentStage(int progress)
+        public StageRow GetCurrentStage(int stage)
         {
-            var index = GetCurrentStageIndex(progress);
-            return index >= 0 ? this.progress[index] : null;
+            var index = GetCurrentStageIndex(stage);
+            return index >= 0 ? this.stages[index] : null;
         }
 
-        public Segment<StageRow> GetStagesToCurrent(int progress, int fromIndex = 0)
+        public Segment<StageRow> GetStagesToCurrent(int stage, int fromIndex = 0)
         {
-            if (fromIndex < 0 || fromIndex >= this.progress.Count)
+            if (fromIndex < 0 || fromIndex >= this.stages.Count)
                 return GetEmptyStages();
 
-            var index = GetCurrentStageIndex(progress);
+            var index = GetCurrentStageIndex(stage);
             var count = index - fromIndex + 1;
 
-            return this.progress.Slice(fromIndex, count < 0 ? 0 : count);
+            return this.stages.Slice(fromIndex, count < 0 ? 0 : count);
         }
 
         public bool ContainsStage(int stage)
         {
-            for (var i = 0; i < this.progress.Count; i++)
+            for (var i = 0; i < this.stages.Count; i++)
             {
-                if (this.progress[i].Index == stage)
+                if (this.stages[i].Index == stage)
                     return true;
             }
 
             return false;
         }
 
-        public void ClearProgress()
-            => this.progress.Clear();
+        public void ClearStages()
+            => this.stages.Clear();
 
         [Serializable]
-        private sealed class QuestProgress : List<StageRow>, IQuestProgress
+        private sealed class StageList : List<StageRow>, IStageList
         { }
 
-        public enum QuestProgressType
+        public enum EventInvokeType
         {
             /// <summary>
             /// Should invoke all stages
@@ -153,12 +153,12 @@ namespace VisualNovelData.Data
             All,
 
             /// <summary>
-            /// Should invoke all the stages from start to the current progress
+            /// Should invoke all the stages from start to the current stage
             /// </summary>
             StartToCurrent,
 
             /// <summary>
-            /// Should only invoke the stage at the current progress
+            /// Should only invoke the stage at the current stage
             /// </summary>
             OnlyCurrent
         }
