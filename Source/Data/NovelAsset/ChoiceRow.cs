@@ -23,7 +23,7 @@ namespace VisualNovelData.Data
         public ChoiceRow(int row, int id, string goTo) : base(row)
         {
             this.id = id;
-            this.goTo = goTo;
+            this.goTo = goTo ?? string.Empty;
         }
 
         public static ChoiceRow None { get; } = new ChoiceRow(-1, 0, string.Empty);

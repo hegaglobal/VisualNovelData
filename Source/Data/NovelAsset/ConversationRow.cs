@@ -32,7 +32,7 @@ namespace VisualNovelData.Data
 
         public ConversationRow(int row, string id) : base(row)
         {
-            this.id = id;
+            this.id = id ?? string.Empty;
         }
 
         public DialogueRow GetDialogue(string id)

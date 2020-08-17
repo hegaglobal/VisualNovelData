@@ -93,10 +93,7 @@ namespace VisualNovelData.Data
 
         protected DialogueRow(int row, string id) : base(row)
         {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException(nameof(id));
-
-            this.id = id;
+            this.id = id ?? string.Empty;
         }
 
         public DialogueRow(int row, string id, float delay, string actor1, IReadOnlyList<Command> actions1,
@@ -106,10 +103,10 @@ namespace VisualNovelData.Data
             : this(row, id)
         {
             this.delay = delay;
-            this.actor1 = actor1;
-            this.actor2 = actor2;
-            this.actor3 = actor3;
-            this.actor4 = actor4;
+            this.actor1 = actor1 ?? string.Empty;
+            this.actor2 = actor2 ?? string.Empty;
+            this.actor3 = actor3 ?? string.Empty;
+            this.actor4 = actor4 ?? string.Empty;
             this.highlight = highlight ?? new int[0];
 
             if (actions1 != null)

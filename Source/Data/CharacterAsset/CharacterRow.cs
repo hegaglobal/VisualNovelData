@@ -61,7 +61,7 @@ namespace VisualNovelData.Data
                             string p2, string p2Background, string p3, string p3Background) : base(row)
         {
             this.id = id ?? string.Empty;
-            this.avatar = avatar;
+            this.avatar = avatar ?? string.Empty;
             this.p1 = p1 ?? string.Empty;
             this.p1Background = p1Background ?? string.Empty;
             this.p2 = p2 ?? string.Empty;

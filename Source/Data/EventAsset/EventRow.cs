@@ -27,10 +27,7 @@ namespace VisualNovelData.Data
 
         public EventRow(int row, string id, EventInvokeType invokeType) : base(row)
         {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException(nameof(id));
-
-            this.id = id;
+            this.id = id ?? string.Empty;
             this.invokeType = invokeType;
         }
 
