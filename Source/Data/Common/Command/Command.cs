@@ -40,7 +40,7 @@ namespace VisualNovelData.Data
             {
                 if (this.cachedObjectList == null)
                 {
-                    this.cachedObjectList = this.parameters as IReadOnlyList<object>;
+                    this.cachedObjectList = this.parameters;
                     this.cachedObjectSegment = this.cachedObjectList.AsSegment();
                 }
 

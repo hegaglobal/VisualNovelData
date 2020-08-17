@@ -69,5 +69,8 @@ namespace VisualNovelData.Data
             this.p3 = p3 ?? string.Empty;
             this.p3Background = p3Background ?? string.Empty;
         }
+
+        public static CharacterRow None { get; } = new CharacterRow(-1, string.Empty, string.Empty, string.Empty, string.Empty,
+                                                                    string.Empty, string.Empty, string.Empty, string.Empty);
     }
 }

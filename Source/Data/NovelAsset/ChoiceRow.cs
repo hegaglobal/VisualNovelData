@@ -25,5 +25,7 @@ namespace VisualNovelData.Data
             this.id = id;
             this.goTo = goTo;
         }
+
+        public static ChoiceRow None { get; } = new ChoiceRow(-1, 0, string.Empty);
     }
 }

@@ -42,7 +42,7 @@ namespace VisualNovelData.Data
             => this.languages.Clear();
 
         public ConversationRow GetConversation(string id)
-            => this.conversations.ContainsKey(id) ? this.conversations[id] : null;
+            => this.conversations.ContainsKey(id) ? this.conversations[id] : ConversationRow.None;
 
         public void AddConversation(ConversationRow conversation)
         {

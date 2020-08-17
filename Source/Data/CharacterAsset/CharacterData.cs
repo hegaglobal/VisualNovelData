@@ -27,7 +27,7 @@ namespace VisualNovelData.Data
 
         public CharacterRow GetCharacter(string id)
             => id == null ? null :
-               this.characters.ContainsKey(id) ? this.characters[id] : null;
+               this.characters.ContainsKey(id) ? this.characters[id] : CharacterRow.None;
 
         public void AddCharacter(CharacterRow character)
         {
@@ -66,7 +66,7 @@ namespace VisualNovelData.Data
             => this.languages.Clear();
 
         public ContentRow GetContent(int id)
-            => this.contents.ContainsKey(id) ? this.contents[id] : null;
+            => this.contents.ContainsKey(id) ? this.contents[id] : ContentRow.None;
 
         public void AddContent(ContentRow content)
         {

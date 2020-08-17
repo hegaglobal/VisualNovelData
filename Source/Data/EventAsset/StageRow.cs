@@ -40,5 +40,7 @@ namespace VisualNovelData.Data
 
             this.maxConstraint = maxConstraint;
         }
+
+        public static StageRow None { get; } = new StageRow(-1, null);
     }
 }

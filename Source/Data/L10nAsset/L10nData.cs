@@ -26,8 +26,8 @@ namespace VisualNovelData.Data
             => this.contents;
 
         public L10nTextRow GetText(string id)
-            => id == null ? null :
-               this.l10nTexts.ContainsKey(id) ? this.l10nTexts[id] : null;
+            => id == null ? L10nTextRow.None :
+               this.l10nTexts.ContainsKey(id) ? this.l10nTexts[id] : L10nTextRow.None;
 
         public void AddText(L10nTextRow text)
         {
@@ -66,7 +66,7 @@ namespace VisualNovelData.Data
             => this.languages.Clear();
 
         public ContentRow GetContent(int id)
-            => this.contents.ContainsKey(id) ? this.contents[id] : null;
+            => this.contents.ContainsKey(id) ? this.contents[id] : ContentRow.None;
 
         public void AddContent(ContentRow content)
         {

@@ -51,7 +51,7 @@ namespace VisualNovelData.Data
         }
 
         public bool ContainsLanguage(string language)
-            => language == null ? false : this.localization.ContainsKey(language);
+            => language != null && this.localization.ContainsKey(language);
 
         public string GetDefaultLanguage()
         {
@@ -65,6 +65,8 @@ namespace VisualNovelData.Data
 
             return key;
         }
+
+        public static ContentRow None { get; } = new ContentRow(-1, Segment<string>.Empty, Segment<string>.Empty);
 
         [Serializable]
         private sealed class LocalizationDictionary : SerializableDictionary<string, string>, ILocalizationDictionary

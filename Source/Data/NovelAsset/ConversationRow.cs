@@ -36,8 +36,8 @@ namespace VisualNovelData.Data
         }
 
         public DialogueRow GetDialogue(string id)
-            => id == null ? null :
-               this.dialogues.ContainsKey(id) ? this.dialogues[id] : null;
+            => id == null ? DialogueRow.None :
+               this.dialogues.ContainsKey(id) ? this.dialogues[id] : DialogueRow.None;
 
         public void AddDialogue(DialogueRow dialogue)
         {
@@ -62,7 +62,7 @@ namespace VisualNovelData.Data
         }
 
         public ContentRow GetContent(int id)
-            => this.contents.ContainsKey(id) ? this.contents[id] : null;
+            => this.contents.ContainsKey(id) ? this.contents[id] : ContentRow.None;
 
         public void AddContent(ContentRow content)
         {
@@ -84,6 +84,8 @@ namespace VisualNovelData.Data
         {
             this.contents.Clear();
         }
+
+        public static ConversationRow None { get; } = new ConversationRow(-1, string.Empty);
 
         [Serializable]
         private sealed class DialogueDictionary : SerializableDictionary<string, DialogueRow>, IDialogueDictionary

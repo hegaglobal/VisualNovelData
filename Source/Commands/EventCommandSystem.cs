@@ -8,7 +8,7 @@ namespace VisualNovelData.Commands
 
     public sealed class EventCommandSystem
     {
-        public IEventData EventData { get; private set; }
+        public ReadEventData EventData { get; private set; }
 
         public CommandSystem CommandSystem { get; private set; }
 
@@ -17,17 +17,17 @@ namespace VisualNovelData.Commands
         public EventCommandSystem(CommandSystem commandSystem)
             => Set(commandSystem);
 
-        public EventCommandSystem(IEventData eventData)
+        public EventCommandSystem(in ReadEventData eventData)
             => Set(eventData);
 
-        public EventCommandSystem(IEventData eventData, CommandSystem commandSystem)
+        public EventCommandSystem(in ReadEventData eventData, CommandSystem commandSystem)
         {
             Set(eventData);
             Set(commandSystem);
         }
 
-        public void Set(IEventData eventData)
-            => this.EventData = eventData ?? throw new ArgumentNullException(nameof(eventData));
+        public void Set(in ReadEventData eventData)
+            => this.EventData = eventData;
 
         public void Set(CommandSystem commandSystem)
             => this.CommandSystem = commandSystem ?? throw new ArgumentNullException(nameof(commandSystem));
@@ -39,7 +39,7 @@ namespace VisualNovelData.Commands
 
             @event = default;
 
-            if (this.EventData == null)
+            if (!this.EventData.HasData)
             {
                 Debug.LogWarning($"Cannot get event. No {nameof(EventAsset)} is assigned");
                 return false;
@@ -61,7 +61,7 @@ namespace VisualNovelData.Commands
             if (!TryGetEvent(eventId, out var @event))
                 return;
 
-            ISegment<StageRow> stages;
+            Segment<StageRow> stages;
 
             switch (@event.InvokeType)
             {

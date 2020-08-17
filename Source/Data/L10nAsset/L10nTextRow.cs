@@ -19,5 +19,7 @@ namespace VisualNovelData.Data
         {
             this.id = id ?? string.Empty;
         }
+
+        public static L10nTextRow None { get; } = new L10nTextRow(-1, string.Empty);
     }
 }

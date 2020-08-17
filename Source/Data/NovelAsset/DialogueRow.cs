@@ -144,7 +144,7 @@ namespace VisualNovelData.Data
         }
 
         public virtual ChoiceRow GetChoice(int id)
-            => this.choices.ContainsKey(id) ? this.choices[id] : null;
+            => this.choices.ContainsKey(id) ? this.choices[id] : ChoiceRow.None;
 
         public virtual void AddChoice(ChoiceRow choice)
         {
@@ -158,6 +158,8 @@ namespace VisualNovelData.Data
         {
             this.choices.Clear();
         }
+
+        public static DialogueRow None { get; } = new DialogueRow(-1, string.Empty);
 
         [Serializable]
         private sealed class ChoiceDictionary : SerializableDictionary<int, ChoiceRow>, IChoiceDictionary

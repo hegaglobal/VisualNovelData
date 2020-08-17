@@ -60,7 +60,7 @@ namespace VisualNovelData.Data
                     return this.stages[i];
             }
 
-            return null;
+            return StageRow.None;
         }
 
         public Segment<StageRow> GetEmptyStages()
@@ -113,7 +113,7 @@ namespace VisualNovelData.Data
         public StageRow GetCurrentStage(int stage)
         {
             var index = GetCurrentStageIndex(stage);
-            return index >= 0 ? this.stages[index] : null;
+            return index >= 0 ? this.stages[index] : StageRow.None;
         }
 
         public Segment<StageRow> GetStagesToCurrent(int stage, int fromIndex = 0)
@@ -140,6 +140,8 @@ namespace VisualNovelData.Data
 
         public void ClearStages()
             => this.stages.Clear();
+
+        public static EventRow None { get; } = new EventRow(-1, string.Empty, EventInvokeType.All);
 
         [Serializable]
         private sealed class StageList : List<StageRow>, IStageList

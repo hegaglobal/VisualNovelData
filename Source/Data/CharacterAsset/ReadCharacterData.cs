@@ -1,7 +1,11 @@
-﻿namespace VisualNovelData.Data
+﻿using System.Runtime.CompilerServices;
+
+namespace VisualNovelData.Data
 {
     public readonly struct ReadCharacterData
     {
+        public bool HasData { get; }
+
         private readonly CharacterData data;
 
         public ILanguageList Languages
@@ -15,14 +19,21 @@
 
         private ReadCharacterData(CharacterData data)
         {
-            this.data = data;
+            this.data = data ?? _empty;
+            this.HasData = true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private CharacterData GetData()
+            => this.HasData ? this.data : _empty;
+
         public CharacterRow GetCharacter(string id)
-            => this.data.GetCharacter(id);
+            => GetData().GetCharacter(id);
 
         public ContentRow GetContent(int id)
-            => this.data.GetContent(id);
+            => GetData().GetContent(id);
+
+        private static readonly CharacterData _empty = new CharacterData();
 
         public static implicit operator ReadCharacterData(CharacterData data)
             => new ReadCharacterData(data);

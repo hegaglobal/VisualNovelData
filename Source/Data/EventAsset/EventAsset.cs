@@ -14,7 +14,7 @@ namespace VisualNovelData.Data
             => this.events;
 
         public EventRow GetEvent(string id)
-            => this.events.ContainsKey(id) ? this.events[id] : null;
+            => this.events.ContainsKey(id) ? this.events[id] : EventRow.None;
 
         public void AddEvent(EventRow @event)
         {
