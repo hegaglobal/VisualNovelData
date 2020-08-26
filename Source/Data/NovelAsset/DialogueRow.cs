@@ -76,7 +76,7 @@ namespace VisualNovelData.Data
         [SerializeField]
         private int[] highlight;
 
-        public ReadArray<int> Highlight
+        public ReadArray1<int> Highlight
             => this.highlight;
 
         [SerializeField]

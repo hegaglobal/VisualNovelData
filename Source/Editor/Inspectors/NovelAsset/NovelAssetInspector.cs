@@ -317,7 +317,7 @@ namespace VisualNovelData.Data.Editor
             return sb.ToString();
         }
 
-        public static string BuildString<T>(in this ReadArray<T> self, StringBuilder sb)
+        public static string BuildString<T>(in this ReadArray1<T> self, StringBuilder sb)
         {
             sb.Clear();
 
