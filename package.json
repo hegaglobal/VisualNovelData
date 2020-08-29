@@ -11,7 +11,7 @@
   ],
   "dependencies": {
     "com.laicasaane.unity-supplements": "1.0.0",
-    "com.bytefish.tinycsvparser": "2.5.2"
+    "com.laicasaane.tinycsvparser": "2.6.0"
   },
   "category": "Unity",
   "author": "Hega Global <hegaglobal> (https://github.com/hegaglobal)"
