@@ -5,7 +5,7 @@ using UnityEngine;
 namespace VisualNovelData.Data
 {
     [Serializable]
-    public sealed partial class Command
+    public partial class Command
     {
         [SerializeField]
         private string id = string.Empty;

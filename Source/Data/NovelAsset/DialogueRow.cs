@@ -38,9 +38,9 @@ namespace VisualNovelData.Data
             => this.actor1;
 
         [SerializeField]
-        private CommandList actions1 = new CommandList();
+        private ActorCommandList actions1 = new ActorCommandList();
 
-        public ICommandList Actions1
+        public IActorCommandList Actions1
             => this.actions1;
 
         [SerializeField]
@@ -50,9 +50,9 @@ namespace VisualNovelData.Data
             => this.actor2;
 
         [SerializeField]
-        private CommandList actions2 = new CommandList();
+        private ActorCommandList actions2 = new ActorCommandList();
 
-        public ICommandList Actions2
+        public IActorCommandList Actions2
             => this.actions2;
 
         [SerializeField]
@@ -62,9 +62,9 @@ namespace VisualNovelData.Data
             => this.actor3;
 
         [SerializeField]
-        private CommandList actions3 = new CommandList();
+        private ActorCommandList actions3 = new ActorCommandList();
 
-        public ICommandList Actions3
+        public IActorCommandList Actions3
             => this.actions3;
 
         [SerializeField]
@@ -74,9 +74,9 @@ namespace VisualNovelData.Data
             => this.actor4;
 
         [SerializeField]
-        private CommandList actions4 = new CommandList();
+        private ActorCommandList actions4 = new ActorCommandList();
 
-        public ICommandList Actions4
+        public IActorCommandList Actions4
             => this.actions4;
 
         [SerializeField]
@@ -116,34 +116,35 @@ namespace VisualNovelData.Data
             this.actor4 = actor4 ?? string.Empty;
             this.highlight = highlight ?? new int[0];
 
-            if (actions1 != null)
-            {
-                this.actions1.AddRange(actions1);
-            }
+            AddRange(this.actions1, actions1, 1);
+            AddRange(this.actions2, actions2, 2);
+            AddRange(this.actions3, actions3, 3);
+            AddRange(this.actions4, actions4, 4);
+            AddRange(this.commandsOnStart, commandsOnStart);
+            AddRange(this.commandsOnEnd, commandsOnEnd);
+        }
 
-            if (actions2 != null)
-            {
-                this.actions1.AddRange(actions2);
-            }
+        private void AddRange(CommandList list, IReadOnlyList<Command> commands)
+        {
+            if (commands == null)
+                return;
 
-            if (actions3 != null)
+            foreach (var command in commands)
             {
-                this.actions1.AddRange(actions3);
+                if (command != null)
+                    list.Add(command);
             }
+        }
 
-            if (actions4 != null)
-            {
-                this.actions1.AddRange(actions4);
-            }
+        private void AddRange(ActorCommandList list, IReadOnlyList<Command> commands, int actorNumber)
+        {
+            if (commands == null)
+                return;
 
-            if (commandsOnStart != null)
+            foreach (var command in commands)
             {
-                this.commandsOnStart.AddRange(commandsOnStart);
-            }
-
-            if (commandsOnEnd != null)
-            {
-                this.commandsOnEnd.AddRange(commandsOnEnd);
+                if (command != null)
+                    list.Add(new ActorCommand(actorNumber, command));
             }
         }
 
@@ -168,6 +169,16 @@ namespace VisualNovelData.Data
         [Serializable]
         private sealed class ChoiceDictionary : SerializableDictionary<int, ChoiceRow>, IChoiceDictionary
         { }
+
+        [Serializable]
+        private sealed class ActorCommandList : List<ActorCommand>, IActorCommandList
+        {
+            Command IReadOnlyList<Command>.this[int index]
+                => this[index];
+
+            IEnumerator<Command> IEnumerable<Command>.GetEnumerator()
+                => GetEnumerator();
+        }
     }
 
     [Serializable]
