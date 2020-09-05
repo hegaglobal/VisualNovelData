@@ -9,9 +9,9 @@ namespace VisualNovelData.Parser
     public partial class VsnRow
     {
         public override bool IsEmpty
-            => !(this.HasConversation  || this.HasDialogue    ||
-                 this.HasActor         || this.HasActions      ||
-                 this.Choice.HasValue  || this.HasGoTo        ||
+            => !(this.HasConversation    || this.HasDialogue      || this.HasSpeaker ||
+                 this.HasActor           || this.HasActions       ||
+                 this.Choice.HasValue    || this.HasGoTo          ||
                  this.HasCommandsOnStart || this.HasCommandsOnEnd ||
                  this.HasContent);
 
@@ -41,6 +41,9 @@ namespace VisualNovelData.Parser
 
         public bool HasGoTo
             => !string.IsNullOrEmpty(this.GoTo);
+
+        public bool HasSpeaker
+            => !string.IsNullOrEmpty(this.Speaker);
 
         public bool HasActor
             => !string.IsNullOrEmpty(this.Actor1) || !string.IsNullOrEmpty(this.Actor2) ||
@@ -78,7 +81,8 @@ namespace VisualNovelData.Parser
         public override string ToString()
         {
             this.stringBuilder.Clear();
-            this.stringBuilder.Append($"{this.Conversation} - {this.Dialogue} - {this.Delay} - {this.Choice} - {this.GoTo} - ");
+            this.stringBuilder.Append($"{this.Conversation} - {this.Dialogue} - {this.Delay} - ");
+            this.stringBuilder.Append($"{this.Choice} - {this.GoTo} - {this.Speaker} - ");
             this.stringBuilder.Append($"{this.Actor1} - {this.Actions1} - {this.Actor2} - {this.Actions2} - ");
             this.stringBuilder.Append($"{this.Actor3} - {this.Actions3} - {this.Actor4} - {this.Actions4} - ");
             this.stringBuilder.Append($"{this.CommandsOnStart} - {this.CommandsOnEnd}");
@@ -323,6 +327,7 @@ namespace VisualNovelData.Parser
                 return null;
 
             var newDialogue = new DialogueRow(row, id, this.Delay ?? 0f,
+                                              this.Speaker?.Trim() ?? string.Empty,
                                               this.Actor1?.Trim() ?? string.Empty, actions1,
                                               this.Actor2?.Trim() ?? string.Empty, actions2,
                                               this.Actor3?.Trim() ?? string.Empty, actions3,
@@ -346,7 +351,7 @@ namespace VisualNovelData.Parser
         {
             var id = this.HasChoice ? this.Choice.Value : 0;
 
-            if (dialogue.GetChoice(id) != null)
+            if (!dialogue.GetChoice(id).IsNullOrNone())
             {
                 var str = id == 0 ? "default choice" : $"choice with id={id}";
                 this.error.AppendLine($"Dialogue `{dialogue.Id}` has already contained a {str}");

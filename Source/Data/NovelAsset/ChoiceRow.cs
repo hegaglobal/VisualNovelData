@@ -28,4 +28,10 @@ namespace VisualNovelData.Data
 
         public static ChoiceRow None { get; } = new ChoiceRow(-1, 0, string.Empty);
     }
+
+    public static class ChoiceRowExtensions
+    {
+        public static bool IsNullOrNone(this ChoiceRow self)
+            => self == null || self == ChoiceRow.None;
+    }
 }

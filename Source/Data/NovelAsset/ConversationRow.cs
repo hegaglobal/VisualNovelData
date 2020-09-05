@@ -91,4 +91,10 @@ namespace VisualNovelData.Data
         private sealed class DialogueDictionary : SerializableDictionary<string, DialogueRow>, IDialogueDictionary
         { }
     }
+
+    public static class ConversationRowExtensions
+    {
+        public static bool IsNullOrNone(this ConversationRow self)
+            => self == null || self == ConversationRow.None;
+    }
 }

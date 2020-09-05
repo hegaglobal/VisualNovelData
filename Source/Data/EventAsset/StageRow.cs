@@ -43,4 +43,10 @@ namespace VisualNovelData.Data
 
         public static StageRow None { get; } = new StageRow(-1, null);
     }
+
+    public static class StageRowExtensions
+    {
+        public static bool IsNullOrNone(this StageRow self)
+            => self == null || self == StageRow.None;
+    }
 }

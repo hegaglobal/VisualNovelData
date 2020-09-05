@@ -115,14 +115,20 @@ namespace VisualNovelData.Data.Editor
                 var delayElem = new DelayElement("Delay") { value = dialogue.Delay.ToString() };
                 dialogueElem.Add(delayElem);
 
-                CreateCharacterTableGUI(dialogueElem, out var columnContainerElem);
+                var speakerElem = new SpeakerElement("Speaker") { value = dialogue.Speaker };
+                dialogueElem.Add(speakerElem);
 
-                CreateCharacterList<ActorColumnElement>(columnContainerElem, "Actor",
-                                                        dialogue.Actor1, dialogue.Actor2, dialogue.Actor3, dialogue.Actor4);
+                if (HasActors(dialogue))
+                {
+                    CreateCharacterTableGUI(dialogueElem, out var columnContainerElem);
 
-                CreateCharacterList<ActionColumnElement>(columnContainerElem, "Actions",
-                                                         dialogue.Actions1.BuildString(sb), dialogue.Actions2.BuildString(sb),
-                                                         dialogue.Actions3.BuildString(sb), dialogue.Actions4.BuildString(sb));
+                    CreateCharacterList<ActorColumnElement>(columnContainerElem, "Actor",
+                                                            dialogue.Actor1, dialogue.Actor2, dialogue.Actor3, dialogue.Actor4);
+
+                    CreateCharacterList<ActionColumnElement>(columnContainerElem, "Actions",
+                                                             dialogue.Actions1.BuildString(sb), dialogue.Actions2.BuildString(sb),
+                                                             dialogue.Actions3.BuildString(sb), dialogue.Actions4.BuildString(sb));
+                }
 
                 var highlightElem = new HighlightElement("Highlight") { value = dialogue.Highlight.BuildString(sb) };
                 dialogueElem.Add(highlightElem);
@@ -137,6 +143,10 @@ namespace VisualNovelData.Data.Editor
             root.Add(dialogueElem);
             return dialogueElem;
         }
+
+        private bool HasActors(DialogueRow dialogue)
+            => !(string.IsNullOrEmpty(dialogue.Actor1) && string.IsNullOrEmpty(dialogue.Actor2) &&
+                 string.IsNullOrEmpty(dialogue.Actor3) && string.IsNullOrEmpty(dialogue.Actor4));
 
         private DefaultChoiceElement CreateDefaultChoiceGUI(DialogueElement root, ConversationRow conversation,
                                                             ChoiceRow choice, IList<ContentElement> contents, string language)

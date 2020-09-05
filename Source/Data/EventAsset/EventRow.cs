@@ -162,4 +162,10 @@ namespace VisualNovelData.Data
             OnlyCurrent
         }
     }
+
+    public static class EventRowExtensions
+    {
+        public static bool IsNullOrNone(this EventRow self)
+            => self == null || self == EventRow.None;
+    }
 }

@@ -15,6 +15,8 @@ namespace VisualNovelData.Parser
 
         public string GoTo { get; private set; }
 
+        public string Speaker { get; private set; }
+
         public string Actor1 { get; private set; }
 
         public string Actions1 { get; private set; }
@@ -41,7 +43,7 @@ namespace VisualNovelData.Parser
 
         public class Mapping : CsvMapping<VsnRow>
         {
-            public const int ContentsStartIndex = 17;
+            public const int ContentsStartIndex = 18;
 
             public Mapping(Segment<string> languages) : base()
             {
@@ -52,6 +54,7 @@ namespace VisualNovelData.Parser
                 MapProperty(++col, x => x.Delay, (x, v) => x.Delay = v);
                 MapProperty(++col, x => x.Choice, (x, v) => x.Choice = v);
                 MapProperty(++col, x => x.GoTo, (x, v) => x.GoTo = v);
+                MapProperty(++col, x => x.Speaker, (x, v) => x.Speaker = v);
                 MapProperty(++col, x => x.Actor1, (x, v) => x.Actor1 = v);
                 MapProperty(++col, x => x.Actions1, (x, v) => x.Actions1 = v);
                 MapProperty(++col, x => x.Actor2, (x, v) => x.Actor2 = v);

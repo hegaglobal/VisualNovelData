@@ -22,4 +22,10 @@ namespace VisualNovelData.Data
 
         public static L10nTextRow None { get; } = new L10nTextRow(-1, string.Empty);
     }
+
+    public static class L10nTextRowExtensions
+    {
+        public static bool IsNullOrNone(this L10nTextRow self)
+            => self == null || self == L10nTextRow.None;
+    }
 }

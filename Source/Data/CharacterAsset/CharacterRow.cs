@@ -73,4 +73,10 @@ namespace VisualNovelData.Data
         public static CharacterRow None { get; } = new CharacterRow(-1, string.Empty, string.Empty, string.Empty, string.Empty,
                                                                     string.Empty, string.Empty, string.Empty, string.Empty);
     }
+
+    public static class CharacterRowExtensions
+    {
+        public static bool IsNullOrNone(this CharacterRow self)
+            => self == null || self == CharacterRow.None;
+    }
 }

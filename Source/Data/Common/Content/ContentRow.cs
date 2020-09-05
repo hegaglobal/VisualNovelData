@@ -72,4 +72,10 @@ namespace VisualNovelData.Data
         private sealed class LocalizationDictionary : SerializableDictionary<string, string>, ILocalizationDictionary
         { }
     }
+
+    public static class ContentRowExtensions
+    {
+        public static bool IsNullOrNone(this ContentRow self)
+            => self == null || self == ContentRow.None;
+    }
 }

@@ -26,6 +26,12 @@ namespace VisualNovelData.Data
             => this.choices;
 
         [SerializeField]
+        private string speaker;
+
+        public string Speaker
+            => this.speaker;
+
+        [SerializeField]
         private string actor1;
 
         public string Actor1
@@ -96,13 +102,14 @@ namespace VisualNovelData.Data
             this.id = id ?? string.Empty;
         }
 
-        public DialogueRow(int row, string id, float delay, string actor1, IReadOnlyList<Command> actions1,
+        public DialogueRow(int row, string id, float delay, string speaker, string actor1, IReadOnlyList<Command> actions1,
                            string actor2, IReadOnlyList<Command> actions2, string actor3, IReadOnlyList<Command> actions3,
                            string actor4, IReadOnlyList<Command> actions4, int[] highlight,
                            IReadOnlyList<Command> commandsOnStart = null, IReadOnlyList<Command> commandsOnEnd = null)
             : this(row, id)
         {
             this.delay = delay;
+            this.speaker = speaker ?? string.Empty;
             this.actor1 = actor1 ?? string.Empty;
             this.actor2 = actor2 ?? string.Empty;
             this.actor3 = actor3 ?? string.Empty;
@@ -173,8 +180,8 @@ namespace VisualNovelData.Data
 
         public EndDialogueRow(int row, string id, IReadOnlyList<Command> commandsOnStart = null,
                               IReadOnlyList<Command> commandsOnEnd = null)
-            : base(row, id, 0f, string.Empty, null, string.Empty, null, string.Empty, null, string.Empty, null, null,
-                   commandsOnStart, commandsOnEnd)
+            : base(row, id, 0f, string.Empty, string.Empty, null, string.Empty, null, string.Empty, null, string.Empty, null,
+                   null, commandsOnStart, commandsOnEnd)
         { }
 
         public sealed override void AddChoice(ChoiceRow option) { }
@@ -184,8 +191,11 @@ namespace VisualNovelData.Data
 
     public static class DialogueRowExtensions
     {
-        public static bool IsEnd(this DialogueRow dialogue)
-            => dialogue != null &&
-               (dialogue is EndDialogueRow || string.Equals(dialogue.Id, EndDialogueRow.Keyword));
+        public static bool IsEnd(this DialogueRow self)
+            => self != null &&
+               (self is EndDialogueRow || string.Equals(self.Id, EndDialogueRow.Keyword));
+
+        public static bool IsNullOrNone(this DialogueRow self)
+            => self == null || self == DialogueRow.None;
     }
 }

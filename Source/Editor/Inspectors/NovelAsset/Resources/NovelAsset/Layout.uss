@@ -96,6 +96,7 @@
 
 .id TextInput,
 .delay TextInput,
+.speaker TextInput,
 .actor TextInput,
 .action TextInput,
 .highlight TextInput,
@@ -114,7 +115,7 @@
 }
 
 .choice-container > Label,
-.delay, .actor, .action, .highlight,
+.delay, .speaker, .actor, .action, .highlight,
 .default-choice,
 .table-container {
     margin-left: 15px;

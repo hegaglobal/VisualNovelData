@@ -42,6 +42,14 @@ namespace VisualNovelData.Data.Editor
             }
         }
 
+        private class SpeakerElement : ReadOnlyTextField
+        {
+            public SpeakerElement(string label) : base(label)
+            {
+                AddToClassList("speaker");
+            }
+        }
+
         private class ActorElement : ReadOnlyTextField
         {
             public ActorElement(string label) : base(label)
