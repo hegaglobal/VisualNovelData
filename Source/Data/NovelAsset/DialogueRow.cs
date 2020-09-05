@@ -14,7 +14,7 @@ namespace VisualNovelData.Data
             => this.id;
 
         [SerializeField]
-        private float delay;
+        private float delay = 0f;
 
         public float Delay
             => this.delay;
@@ -26,13 +26,13 @@ namespace VisualNovelData.Data
             => this.choices;
 
         [SerializeField]
-        private string speaker;
+        private string speaker = string.Empty;
 
         public string Speaker
             => this.speaker;
 
         [SerializeField]
-        private string actor1;
+        private string actor1 = string.Empty;
 
         public string Actor1
             => this.actor1;
@@ -44,7 +44,7 @@ namespace VisualNovelData.Data
             => this.actions1;
 
         [SerializeField]
-        private string actor2;
+        private string actor2 = string.Empty;
 
         public string Actor2
             => this.actor2;
@@ -56,7 +56,7 @@ namespace VisualNovelData.Data
             => this.actions2;
 
         [SerializeField]
-        private string actor3;
+        private string actor3 = string.Empty;
 
         public string Actor3
             => this.actor3;
@@ -68,7 +68,7 @@ namespace VisualNovelData.Data
             => this.actions3;
 
         [SerializeField]
-        private string actor4;
+        private string actor4 = string.Empty;
 
         public string Actor4
             => this.actor4;
@@ -80,7 +80,7 @@ namespace VisualNovelData.Data
             => this.actions4;
 
         [SerializeField]
-        private int[] highlight;
+        private int[] highlight = new int[0];
 
         public ReadArray1<int> Highlight
             => this.highlight;
