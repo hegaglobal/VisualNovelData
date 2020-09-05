@@ -171,14 +171,7 @@ namespace VisualNovelData.Data
         { }
 
         [Serializable]
-        private sealed class ActorCommandList : List<ActorCommand>, IActorCommandList
-        {
-            Command IReadOnlyList<Command>.this[int index]
-                => this[index];
-
-            IEnumerator<Command> IEnumerable<Command>.GetEnumerator()
-                => GetEnumerator();
-        }
+        private sealed class ActorCommandList : List<ActorCommand>, IActorCommandList { }
     }
 
     [Serializable]

@@ -2,5 +2,5 @@
 
 namespace VisualNovelData.Data
 {
-    public interface IActorCommandList : IReadOnlyList<ActorCommand>, ICommandList { }
+    public interface IActorCommandList : IReadOnlyList<ActorCommand> { }
 }
