@@ -14,10 +14,10 @@ namespace VisualNovelData.Data
             => this.id;
 
         [SerializeField]
-        private string type = string.Empty;
+        private string key = string.Empty;
 
-        public string Type
-            => this.type;
+        public string Key
+            => this.key;
 
         [SerializeField]
         private int maxConstraint = -1;
@@ -30,6 +30,9 @@ namespace VisualNovelData.Data
 
         public IParameterList Parameters
             => this.parameters;
+
+        public virtual Metadata Metadata
+            => Metadata.None;
 
         private IReadOnlyList<object> cachedObjectList;
         private Segment<object> cachedObjectSegment;
@@ -48,20 +51,20 @@ namespace VisualNovelData.Data
             }
         }
 
-        public Command(string id, string type, int maxConstraint = -1, params string[] parameters)
+        public Command(string id, string key, int maxConstraint = -1, params string[] parameters)
         {
-            Initialize(id, type, maxConstraint, parameters);
+            Initialize(id, key, maxConstraint, parameters);
         }
 
-        public Command(string id, string type, int maxConstraint = -1, in Segment<string> parameters = default)
+        public Command(string id, string key, int maxConstraint = -1, in Segment<string> parameters = default)
         {
-            Initialize(id, type, maxConstraint, parameters);
+            Initialize(id, key, maxConstraint, parameters);
         }
 
-        private void Initialize(string id, string type, int maxConstraint, in Segment<string> parameters)
+        private void Initialize(string id, string key, int maxConstraint, in Segment<string> parameters)
         {
             this.id = id;
-            this.type = type;
+            this.key = key;
             this.maxConstraint = maxConstraint;
             this.parameters.AddRange(parameters);
         }

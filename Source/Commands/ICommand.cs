@@ -4,6 +4,6 @@ namespace VisualNovelData.Commands
 {
     public interface ICommand
     {
-        void Invoke(in Segment<object> parameters);
+        void Invoke(in Metadata metadata, in Segment<object> parameters);
     }
 }

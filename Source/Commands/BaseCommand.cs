@@ -7,6 +7,6 @@ namespace VisualNovelData.Commands
     {
         protected Converter converter { get; } = new Converter();
 
-        public abstract void Invoke(in Segment<object> parameters);
+        public abstract void Invoke(in Metadata metadata, in Segment<object> parameters);
     }
 }

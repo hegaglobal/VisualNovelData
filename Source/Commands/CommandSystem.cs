@@ -145,7 +145,11 @@ namespace VisualNovelData.Commands
                 return true;
             }
 
-            Debug.LogWarning($"Command with key={key} is expected to be a {typeof(T)}, but it actually is a {command.GetType()}");
+            if (command != null)
+                Debug.LogWarning($"Command with key={key} is expected to be a {typeof(T)}, but it actually is a {command.GetType()}");
+            else
+                Debug.LogWarning($"Command with key={key} is expected to be a {typeof(T)}, but it actually is null");
+
             value = default;
             return false;
         }
@@ -158,7 +162,7 @@ namespace VisualNovelData.Commands
             if (CanSkip(command, stage))
                 return;
 
-            Invoke(command.Type, command.ObjectParameters);
+            Invoke(command.Key, command.Metadata, command.ObjectParameters);
         }
 
         public void Invoke<T>(Command command, int stage) where T : ICommand
@@ -169,7 +173,7 @@ namespace VisualNovelData.Commands
             if (CanSkip(command, stage))
                 return;
 
-            Invoke<T>(command.Type, command.ObjectParameters);
+            Invoke<T>(command.Key, command.Metadata, command.ObjectParameters);
         }
 
         public void Invoke(in Segment<Command> commands, int stage)
@@ -182,7 +186,7 @@ namespace VisualNovelData.Commands
                 if (CanSkip(command, stage))
                     continue;
 
-                Invoke(command.Type, command.ObjectParameters);
+                Invoke(command.Key, command.Metadata, command.ObjectParameters);
             }
         }
 
@@ -196,14 +200,20 @@ namespace VisualNovelData.Commands
                 if (CanSkip(command, stage))
                     continue;
 
-                Invoke<T>(command.Type, command.ObjectParameters);
+                Invoke<T>(command.Key, command.Metadata, command.ObjectParameters);
             }
         }
 
         public void Invoke(string key, params object[] parameters)
-            => Invoke(key, parameters.AsSegment());
+            => Invoke(key, Metadata.None, parameters.AsSegment());
+
+        public void Invoke(string key, in Metadata metadata, params object[] parameters)
+            => Invoke(key, metadata, parameters.AsSegment());
 
         public void Invoke(string key, in Segment<object> parameters)
+            => Invoke(key, Metadata.None, parameters);
+
+        public void Invoke(string key, in Metadata metadata, in Segment<object> parameters)
         {
             if (!this.commands.ContainsKey(key))
             {
@@ -211,19 +221,31 @@ namespace VisualNovelData.Commands
                 return;
             }
 
-            this.commands[key].Invoke(parameters);
+            this.commands[key].Invoke(metadata, parameters);
         }
 
         public void Invoke<T>(params object[] parameters) where T : ICommand
-            => Invoke<T>(parameters.AsSegment());
+            => Invoke<T>(Metadata.None, parameters.AsSegment());
+
+        public void Invoke<T>(in Metadata metadata, params object[] parameters) where T : ICommand
+            => Invoke<T>(metadata, parameters.AsSegment());
 
         public void Invoke<T>(in Segment<object> parameters) where T : ICommand
-            => Invoke(typeof(T).Name, parameters);
+            => Invoke(typeof(T).Name, Metadata.None, parameters);
+
+        public void Invoke<T>(in Metadata metadata, in Segment<object> parameters) where T : ICommand
+            => Invoke(typeof(T).Name, metadata, parameters);
 
         public void Invoke<T>(string key, params object[] parameters) where T : ICommand
-            => Invoke<T>(key, parameters.AsSegment());
+            => Invoke<T>(key, Metadata.None, parameters.AsSegment());
+
+        public void Invoke<T>(string key, in Metadata metadata, params object[] parameters) where T : ICommand
+            => Invoke<T>(key, metadata, parameters.AsSegment());
 
         public void Invoke<T>(string key, in Segment<object> parameters) where T : ICommand
+            => Invoke<T>(key, Metadata.None, parameters);
+
+        public void Invoke<T>(string key, in Metadata metadata, in Segment<object> parameters) where T : ICommand
         {
             if (!this.commands.ContainsKey(key))
             {
@@ -231,14 +253,11 @@ namespace VisualNovelData.Commands
                 return;
             }
 
-            var e = this.commands[key];
-
-            if (e is T)
-                e.Invoke(parameters);
+            if (this.commands[key] is T command)
+                command.Invoke(metadata, parameters);
         }
 
         private static bool CanSkip(Command command, int stage)
-            => command == null ||
-               (command.MaxConstraint >= 0 && stage > command.MaxConstraint);
+            => command == null || (command.MaxConstraint >= 0 && stage > command.MaxConstraint);
     }
 }

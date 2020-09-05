@@ -10,7 +10,7 @@ namespace VisualNovelData.Parser
     {
         private static readonly char[] _commandSeparators = new[] { '[', ']' };
         private static readonly string[] _paramSeparators = new[] { "::" };
-        private static readonly Regex _commandConstraintRegex = new Regex(@"\<(?<constraint>\d*)\>(?<type>[^\n\r]*)", RegexOptions.Compiled);
+        private static readonly Regex _commandConstraintRegex = new Regex(@"\<(?<constraint>\d*)\>(?<key>[^\n\r]*)", RegexOptions.Compiled);
         private static readonly Regex _positionalParamRegex = new Regex(@"^{(?<position>\d+)}=(?<value>[^\n\r]*)$", RegexOptions.Compiled);
         private static readonly string[] _noParam = new string[0];
 
@@ -59,16 +59,16 @@ namespace VisualNovelData.Parser
 
             var match = _commandConstraintRegex.Match(commandDef);
             var maxConstraint = -1;
-            string commandType;
+            string commandKey;
 
             if (!match.Success)
             {
-                commandType = commandDef;
+                commandKey = commandDef;
             }
             else if (int.TryParse(match.Groups["constraint"].Value, out var constraint))
             {
                 maxConstraint = constraint;
-                commandType = match.Groups["type"].Value;
+                commandKey = match.Groups["key"].Value;
             }
             else
             {
@@ -79,13 +79,13 @@ namespace VisualNovelData.Parser
             if (maxConstraint >= 0)
                 this.idBuilder.Append($"<{maxConstraint}> ");
 
-            this.idBuilder.Append(commandType);
-            var parameters = ParseParameters(commandDef, commandType, parts.Slice(1));
+            this.idBuilder.Append(commandKey);
+            var parameters = ParseParameters(commandDef, commandKey, parts.Slice(1));
 
             if (this.errorLogger.Length > 0)
                 return null;
 
-            return new Command(this.idBuilder.ToString(), commandType, maxConstraint, parameters);
+            return new Command(this.idBuilder.ToString(), commandKey, maxConstraint, parameters);
         }
 
         private string[] ParseParameters(string commandDef, string commandName, in Segment<string> parts)

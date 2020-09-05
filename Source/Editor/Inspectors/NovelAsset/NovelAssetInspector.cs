@@ -309,7 +309,7 @@ namespace VisualNovelData.Data.Editor
 
     internal static class CollectionExtensions
     {
-        public static string BuildString(this ICommandList self, StringBuilder sb)
+        public static string BuildString(this IReadOnlyList<Command> self, StringBuilder sb)
         {
             sb.Clear();
 

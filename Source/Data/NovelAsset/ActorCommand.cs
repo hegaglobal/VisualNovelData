@@ -13,20 +13,23 @@ namespace VisualNovelData.Data
         public int ActorNumber
             => this.actorNumber;
 
-        public ActorCommand(int actorNumber, string id, string type, int maxConstraint = -1, params string[] parameters)
-            : base(id, type, maxConstraint, parameters)
+        public override Metadata Metadata
+            => this.actorNumber.AsMetadata();
+
+        public ActorCommand(int actorNumber, string id, string key, int maxConstraint = -1, params string[] parameters)
+            : base(id, key, maxConstraint, parameters)
         {
             this.actorNumber = actorNumber;
         }
 
-        public ActorCommand(int actorNumber, string id, string type, int maxConstraint = -1, in Segment<string> parameters = default)
-            : base(id, type, maxConstraint, parameters)
+        public ActorCommand(int actorNumber, string id, string key, int maxConstraint = -1, in Segment<string> parameters = default)
+            : base(id, key, maxConstraint, parameters)
         {
             this.actorNumber = actorNumber;
         }
 
         public ActorCommand(int actorNumber, Command command)
-            : this(actorNumber, command.Id, command.Type, command.MaxConstraint, command.Parameters.AsSegment())
+            : this(actorNumber, command.Id, command.Key, command.MaxConstraint, command.Parameters.AsSegment())
         {
         }
     }
