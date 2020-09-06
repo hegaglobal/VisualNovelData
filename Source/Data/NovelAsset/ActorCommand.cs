@@ -5,7 +5,7 @@ using UnityEngine;
 namespace VisualNovelData.Data
 {
     [Serializable]
-    public class ActorCommand : Command
+    public sealed class ActorCommand : Command
     {
         [SerializeField]
         private int actorNumber = 0;
@@ -17,20 +17,23 @@ namespace VisualNovelData.Data
             => this.actorNumber.AsMetadata();
 
         public ActorCommand(int actorNumber, string id, string key, int maxConstraint = -1, params string[] parameters)
-            : base(id, key, maxConstraint, parameters)
+            : base(ToActor(id), ToActor(key), maxConstraint, parameters)
         {
             this.actorNumber = actorNumber;
         }
 
         public ActorCommand(int actorNumber, string id, string key, int maxConstraint = -1, in Segment<string> parameters = default)
-            : base(id, key, maxConstraint, parameters)
+            : base(ToActor(id), ToActor(key), maxConstraint, parameters)
         {
             this.actorNumber = actorNumber;
         }
 
         public ActorCommand(int actorNumber, Command command)
-            : this(actorNumber, command.Id, command.Key, command.MaxConstraint, command.Parameters.AsSegment())
+            : this(actorNumber, ToActor(command.Id), ToActor(command.Key), command.MaxConstraint, command.Parameters.AsSegment())
         {
         }
+
+        private static string ToActor(string value)
+            => $"<actor>{value}";
     }
 }
