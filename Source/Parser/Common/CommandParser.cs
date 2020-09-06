@@ -12,6 +12,7 @@ namespace VisualNovelData.Parser
         private static readonly string[] _paramSeparators = new[] { "::" };
         private static readonly Regex _commandConstraintRegex = new Regex(@"\<(?<constraint>\d*)\>(?<key>[^\n\r]*)", RegexOptions.Compiled);
         private static readonly Regex _positionalParamRegex = new Regex(@"^{(?<position>\d+)}=(?<value>[^\n\r]*)$", RegexOptions.Compiled);
+        private static readonly Regex _keyRegex = new Regex(@"^[_a-zA-Z][_a-zA-Z0-9]*", RegexOptions.Compiled);
         private static readonly string[] _noParam = new string[0];
 
         private readonly StringBuilder errorLogger = new StringBuilder();
@@ -73,6 +74,14 @@ namespace VisualNovelData.Parser
             else
             {
                 this.errorLogger.AppendLine($"Cannot convert max constraint to integer at `{commandDef}`");
+                return null;
+            }
+
+            match = _keyRegex.Match(commandKey);
+
+            if (!match.Success)
+            {
+                this.errorLogger.AppendLine($"`{commandKey}` is not a valid command key. Command key must begin with 1 character in the range [_a-zA-Z], then followed by 0 or more characters in the range [_a-zA-Z0-9]");
                 return null;
             }
 
