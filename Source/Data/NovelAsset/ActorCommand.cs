@@ -29,7 +29,7 @@ namespace VisualNovelData.Data
         }
 
         public ActorCommand(int actorNumber, Command command)
-            : this(actorNumber, ToActor(command.Id), ToActor(command.Key), command.MaxConstraint, command.Parameters.AsSegment())
+            : this(actorNumber, command.Id, command.Key, command.MaxConstraint, command.Parameters.AsSegment())
         {
         }
 
