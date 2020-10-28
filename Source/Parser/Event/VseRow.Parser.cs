@@ -62,7 +62,7 @@ namespace VisualNovelData.Parser
 
             if (!this.idRegex.IsMatch(id))
             {
-                this.error.AppendLine($"Event id must only contain characters in [a-zA-Z0-9_]. Current value: {this.Event}");
+                this.error.AppendLine($"Event id must only contain characters in {IdCharRange}. Current value: {this.Event}");
                 return null;
             }
 

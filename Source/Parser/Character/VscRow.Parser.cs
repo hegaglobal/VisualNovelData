@@ -25,6 +25,12 @@ namespace VisualNovelData.Parser
             {
                 var id = this.Character ?? string.Empty;
 
+                if (!this.idRegex.IsMatch(id))
+                {
+                    this.error.AppendLine($"Character id must only contain characters in {IdCharRange}. Current value: {id}");
+                    return null;
+                }
+
                 if (data.Characters.ContainsKey(id))
                     UnityEngine.Debug.LogWarning($"Vsc row {row}: Character id has already existed");
 

@@ -23,10 +23,16 @@ namespace VisualNovelData.Parser
 
             if (!this.IsEmpty)
             {
-                var id = this.Key ?? string.Empty;
+                var key = this.Key ?? string.Empty;
 
-                if (data.L10nTexts.ContainsKey(id))
-                    UnityEngine.Debug.LogWarning($"Vsl row {row}: LocalText id has already existed");
+                if (!this.idRegex.IsMatch(key))
+                {
+                    this.error.AppendLine($"L10n key must only contain characters in {IdCharRange}. Current value: {key}");
+                    return null;
+                }
+
+                if (data.L10nTexts.ContainsKey(key))
+                    UnityEngine.Debug.LogWarning($"Vsl row {row}: L10n key has already existed");
 
                 text = new L10nTextRow(row, this.Key ?? string.Empty);
                 data.AddText(text);

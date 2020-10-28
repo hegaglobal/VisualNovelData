@@ -148,7 +148,7 @@ namespace VisualNovelData.Parser
 
             if (!this.idRegex.IsMatch(id))
             {
-                this.error.AppendLine($"Conversation id must only contain characters in [a-zA-Z0-9_]. Current value: {id}");
+                this.error.AppendLine($"Conversation id must only contain characters in {IdCharRange}. Current value: {id}");
                 return null;
             }
 
@@ -282,7 +282,7 @@ namespace VisualNovelData.Parser
 
             if (!this.idRegex.IsMatch(id))
             {
-                this.error.AppendLine($"Dialogue id must only contain characters in [a-zA-Z0-9_]. Current value: {this.Dialogue}");
+                this.error.AppendLine($"Dialogue id must only contain characters in {IdCharRange}. Current value: {this.Dialogue}");
                 return null;
             }
 
