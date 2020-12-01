@@ -30,6 +30,8 @@ namespace VisualNovelData.Parser
                             var col2 = ContentsStartIndex + i;
                             entity.Contents[i] = values.Tokens[col2];
                         }
+
+                        return true;
                     });
                 }
             }
